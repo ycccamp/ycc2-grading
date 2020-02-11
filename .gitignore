@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 
 # Created by https://www.gitignore.io/api/node,macos,windows
 # Edit at https://www.gitignore.io/?templates=node,macos,windows
@@ -31,6 +33,7 @@ Temporary Items
 .apdisk
 
 ### Node ###
+>>>>>>> 073cf61a63ef0fa7cce7e4c417fb55788c28a00c
 # Logs
 logs
 *.log
