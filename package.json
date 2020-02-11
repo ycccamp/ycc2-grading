@@ -8,6 +8,7 @@
     "dev": "next",
     "build": "next build",
     "export": "next export",
+    "firebase": "firebase",
     "lint": "tsc --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "repository": {
@@ -45,6 +46,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "firebase-tools": "^7.12.1",
     "prettier": "^1.19.1",
     "typescript": "^3.7.5"
   }
