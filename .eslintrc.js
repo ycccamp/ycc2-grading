@@ -13,7 +13,9 @@ module.exports = {
     },
     rules: {
         "react/react-in-jsx-scope": "off",
-        "react/jsx-filename-extension": ["error", {"extensions": [".jsx",".tsx"]}]
+        "react/jsx-filename-extension": ["error", {"extensions": [".jsx",".tsx"]}],
+        "react/prop-types": "off",
+        "no-undef": "off"
     },
     settings: {
         react: {
