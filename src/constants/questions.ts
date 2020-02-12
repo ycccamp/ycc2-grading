@@ -1,4 +1,4 @@
-const Questions = {
+const QUESTIONS = {
   general: {
     Q1: 'ถ้าน้องถูกจารึกไว้ในประวัติศาสตร์ว่าเป็นบุคคลสำคัญ น้องคิดว่าตัวเองควรถูกจารึกไว้ในด้านใด ด้วยเหตุผลอะไร ?',
     Q2:
@@ -24,4 +24,4 @@ const Questions = {
   },
 };
 
-export default Questions;
+export default QUESTIONS;
