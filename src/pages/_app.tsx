@@ -9,6 +9,7 @@ import theme from '../theme';
 const App = ({ Component, pageProps }) => (
   <>
     <Head>
+      <title>YCC Grading</title>
       <link href="https://fonts.googleapis.com/css?family=Prompt|Sarabun&display=swap" rel="stylesheet" />
     </Head>
     <ThemeProvider theme={theme}>
