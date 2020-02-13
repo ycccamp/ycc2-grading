@@ -1,4 +1,4 @@
-import { Heading, Box, Text, Flex, Stack, Textarea, Avatar } from '@chakra-ui/core';
+import { Heading, Box, Text, Stack, Textarea } from '@chakra-ui/core';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import Layout from '../../components/Layout';
