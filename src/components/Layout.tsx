@@ -7,7 +7,8 @@ const Layout: React.FC = ({ children }) => (
       <Stack spacing={4} width="100%">
         <DashbaordLink text="Dashboard" link="/dashboard" />
         <DashbaordLink text="คัดเลือกผู้สมัคร" link="/select" />
-        <DashbaordLink text="ให้คะแนน" link="/grading" />
+        <DashbaordLink text="ให้คะแนนคำถามกลาง" link="/grading/general" />
+        <DashbaordLink text="ให้คะแนนคำถามสาขา" link="/grading/track" />
         <DashbaordLink text="ผู้ผ่านการคัดเลือก" link="/selected" />
       </Stack>
       <Stack mt={10} alignItems="center" width="100%">

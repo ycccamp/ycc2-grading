@@ -1,8 +1,8 @@
 import { Heading, Box, Text, Stack, Textarea } from '@chakra-ui/core';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
-import Layout from '../../components/Layout';
-import QUESTIONS from '../../constants/questions';
+import Layout from '../../../components/Layout';
+import QUESTIONS from '../../../constants/questions';
 
 const PersonGrading: NextPage = () => {
   const router = useRouter();
