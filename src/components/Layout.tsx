@@ -2,8 +2,8 @@ import { Flex, Box, Stack, Button } from '@chakra-ui/core';
 import DashbaordLink from './DashboardLink';
 
 const Layout: React.FC = ({ children }) => (
-  <Flex justify="flex-start" width="100vw" height="100vh">
-    <Box bg="gray.700" color="gray.100" width={1 / 6}>
+  <Flex justify="flex-start" width="100vw" height="100%">
+    <Box bg="gray.700" color="gray.100" height="100%" width={1 / 6}>
       <Stack spacing={4} width="100%">
         <DashbaordLink text="Dashboard" link="/dashboard" />
         <DashbaordLink text="คัดเลือกผู้สมัคร" link="/select" />

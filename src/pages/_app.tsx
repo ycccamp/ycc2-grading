@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { ThemeProvider } from 'emotion-theming';
 import { CSSReset } from '@chakra-ui/core';
+import { Global, css } from '@emotion/core';
 import Head from 'next/head';
 import theme from '../theme';
 
@@ -14,6 +15,17 @@ const App = ({ Component, pageProps }) => (
     </Head>
     <ThemeProvider theme={theme}>
       <CSSReset />
+      <Global
+        styles={css`
+          html,
+          body {
+            height: 100%;
+          }
+          #__next {
+            height: 100%;
+          }
+        `}
+      />
       <Component {...pageProps} />
     </ThemeProvider>
   </>
