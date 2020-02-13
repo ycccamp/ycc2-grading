@@ -10,18 +10,15 @@ const mockCandidates: Array<Candidate> = [
     id: 'njdfgndfonjdfobn',
     track: Tracks.Creative,
     status: 'กำลังตรวจ',
-    graders: {
-      general: 'โมส',
-      track: 'ดาต้า',
-    },
-  },
-  {
-    id: 'fnbgotrnhernuohb',
-    track: Tracks.Developer,
-    status: 'กำลังตรวจ',
-    graders: {
-      general: 'โมส',
-      track: 'ดาต้า',
+    gradingData: {
+      general: {
+        score: 15.6,
+        grader: 'พล',
+      },
+      track: {
+        score: 12.6,
+        grader: 'อิ้ง',
+      },
     },
   },
 ];

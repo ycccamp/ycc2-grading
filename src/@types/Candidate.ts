@@ -4,9 +4,15 @@ interface Candidate {
   id: string;
   track: TRACKS;
   status: string;
-  graders: {
-    general: string;
-    track: string;
+  gradingData: {
+    general: {
+      score: number;
+      grader: string;
+    };
+    track: {
+      score: number;
+      grader: string;
+    };
   };
 }
 

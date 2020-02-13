@@ -36,6 +36,8 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
       <Tr bg="pink.700">
         <Th>รหัสอ้างอิง</Th>
         <Th>สาขา</Th>
+        <Th>คะแนนคำถามกลาง</Th>
+        <Th>คะแนนคำถามสาขา</Th>
         <Th>ผู้ตรวจคำถามกลาง</Th>
         <Th>ผู้ตรวจคำถามสาขา</Th>
         <Th>สถานะ</Th>
@@ -46,8 +48,10 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
           <Tr bg="pink.100" key={candidate.id}>
             <Td>{candidate.id}</Td>
             <Td>{candidate.track}</Td>
-            <Td>{candidate.graders.general}</Td>
-            <Td>{candidate.graders.track}</Td>
+            <Td>{candidate.gradingData.general.score}</Td>
+            <Td>{candidate.gradingData.track.score}</Td>
+            <Td>{candidate.gradingData.general.grader}</Td>
+            <Td>{candidate.gradingData.track.grader}</Td>
             <Td>{candidate.status}</Td>
             <Td>
               <Button variantColor="blue">{displayMode(mode)}</Button>
