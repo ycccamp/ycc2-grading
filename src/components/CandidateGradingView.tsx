@@ -2,7 +2,7 @@ import { Heading, Box, Text, Stack, Textarea, FormControl, Flex, FormLabel, Inpu
 import Layout from './Layout';
 import QUESTIONS from '../constants/questions';
 import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
-
+// TODO: Please change the question base on mode and track
 const getTitleMessage = (props: CandidateGradingViewProps): string => {
   if (props.mode === GradingMode.General) {
     return `ให้คะแนนคำถามกลางผู้สมัคร : ${props.id}`;
