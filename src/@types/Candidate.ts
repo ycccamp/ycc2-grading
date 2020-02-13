@@ -1,6 +1,6 @@
 import TRACKS from '../constants/tracks';
 
-interface CandidateSelectorProps {
+interface Candidate {
   id: string;
   track: TRACKS;
   status: string;
@@ -10,4 +10,4 @@ interface CandidateSelectorProps {
   };
 }
 
-export default CandidateSelectorProps;
+export default Candidate;
