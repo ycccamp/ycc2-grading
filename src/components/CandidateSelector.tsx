@@ -30,7 +30,7 @@ const displayMode = (mode: SelectorMode): string => {
   return 'ตรวจสอบประวัติ';
 };
 
-const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates }) => {
+const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates, action }) => {
   return (
     <Box as="table" w="100%">
       <Tr bg="pink.700">
@@ -54,7 +54,9 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
             <Td>{candidate.gradingData.track.grader}</Td>
             <Td>{candidate.status}</Td>
             <Td>
-              <Button variantColor="blue">{displayMode(mode)}</Button>
+              <Button onClick={action || null} variantColor="blue">
+                {displayMode(mode)}
+              </Button>
             </Td>
           </Tr>
         );
