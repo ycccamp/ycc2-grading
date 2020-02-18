@@ -4,4 +4,4 @@ import firebaseConfig from '../constants/firebase.config';
 
 firebase.initializeApp(firebaseConfig);
 
-const db = firebase.firestore();
+// const db = firebase.firestore();
