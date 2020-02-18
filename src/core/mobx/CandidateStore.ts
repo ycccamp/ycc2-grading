@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { observable, action } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import Candidate from '../../@types/Candidate';
@@ -54,6 +55,34 @@ class CandidatesStore {
   getCandidatesByTrack = computedFn(function(track: TRACKS): Array<Candidate> {
     return this.candidates.filter((candidate: { track: string }) => candidate.track === track);
   });
+
+  // There is no grader option. Please add
+  @action gradeCandidate(candidateId: string, section: string, score: number): void {
+    this.candidates.forEach(candidate => {
+      if (candidate.id === candidateId) {
+        const candidateFirebase = this.rootStore.db.collection('registration').doc(candidateId);
+        if (section === 'track') {
+          candidate.gradingData.track.score = score;
+          candidateFirebase.update({
+            grading: {
+              track: {
+                score,
+              },
+            },
+          });
+        } else if (section === 'general') {
+          candidate.gradingData.general.score = score;
+          candidateFirebase.update({
+            grading: {
+              general: {
+                score,
+              },
+            },
+          });
+        }
+      }
+    });
+  }
 }
 
 export default CandidatesStore;
