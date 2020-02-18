@@ -8,14 +8,23 @@ import CandidateViewProps from '../@types/CandidateViewProps';
 const mockCandidates: Array<Candidate> = [
   {
     id: 'njdfgndfonjdfobn',
-    track: Tracks.Creative,
+    track: 'creative',
     status: 'กำลังตรวจ',
     gradingData: {
       general: {
+        answers: {
+          Q1: '',
+          Q2: '',
+          Q3: '',
+        },
         score: 15.6,
         grader: 'พล',
       },
       track: {
+        answers: {
+          Q1: '',
+          Q2: '',
+        },
         score: 12.6,
         grader: 'อิ้ง',
       },
