@@ -1,4 +1,5 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
+import { computedFn } from 'mobx-utils';
 import Candidate from '../../@types/Candidate';
 import RootStore from './RootStore';
 import TRACKS from '../../constants/tracks';
@@ -48,6 +49,11 @@ class CandidatesStore {
         }
       });
   }
+
+  // eslint-disable-next-line func-names
+  getCandidatesByTrack = computedFn(function(track: TRACKS): Array<Candidate> {
+    return this.candidates.filter((candidate: { track: string }) => candidate.track === track);
+  });
 }
 
 export default CandidatesStore;
