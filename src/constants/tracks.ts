@@ -1,7 +1,3 @@
-enum TRACKS {
-  Developer = 'Developer',
-  Design = 'Design',
-  Creative = 'Creative',
-}
+type TRACKS = 'developer' | 'creative' | 'design';
 
 export default TRACKS;
