@@ -11,7 +11,7 @@ class RootStore {
 
   constructor(db: firestore.Firestore) {
     this.db = db;
-    this.candidateStore = new CandidatesStore();
+    this.candidateStore = new CandidatesStore(this);
     this.authStore = new AuthStore();
   }
 }
