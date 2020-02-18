@@ -2,7 +2,7 @@ import { Heading } from '@chakra-ui/core';
 import CandidateSelector from './CandidateSelector';
 import Layout from './Layout';
 import Candidate from '../@types/Candidate';
-import Tracks from '../constants/tracks';
+// import Tracks from '../constants/tracks';
 import CandidateViewProps from '../@types/CandidateViewProps';
 
 const mockCandidates: Array<Candidate> = [

@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import Candidate from '../../@types/Candidate';
 import RootStore from './RootStore';
