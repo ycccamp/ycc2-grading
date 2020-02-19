@@ -1,16 +1,14 @@
 import { firestore } from 'firebase';
 import CandidatesStore from './CandidateStore';
 import AuthStore from './AuthStore';
+import 'firebase/firestore';
 
 class RootStore {
   candidateStore: CandidatesStore;
 
   authStore: AuthStore;
 
-  db: firestore.Firestore;
-
-  constructor(db: firestore.Firestore) {
-    this.db = db;
+  constructor() {
     this.candidateStore = new CandidatesStore(this);
     this.authStore = new AuthStore();
   }
