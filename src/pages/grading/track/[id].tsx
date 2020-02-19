@@ -39,9 +39,9 @@ const mockCandidates: Array<Candidate> = [
 ];
 
 const PersonTrackGrading: NextPage = () => {
-  // const router = useRouter();
-  // const { id } = router.query;
-  return <CandidateGradingView id={mockCandidates[0].id} mode={GradingMode.Track} candidate={mockCandidates[0]} />;
+  const router = useRouter();
+  const { id } = router.query;
+  return <CandidateGradingView id={id.toString()} mode={GradingMode.Track} candidate={mockCandidates[0]} />;
 };
 
 export default PersonTrackGrading;
