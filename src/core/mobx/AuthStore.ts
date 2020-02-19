@@ -1,8 +1,8 @@
 import { observable } from 'mobx';
 
 class AuthStore {
-  @observable name: string;
+  @observable name = '';
 
-  @observable role: string;
+  @observable role = '';
 }
 export default AuthStore;

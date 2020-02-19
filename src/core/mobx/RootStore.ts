@@ -1,7 +1,7 @@
-import { firestore } from 'firebase';
+// import { firestore } from 'firebase';
 import CandidatesStore from './CandidateStore';
 import AuthStore from './AuthStore';
-import 'firebase/firestore';
+// import 'firebase/firestore';
 
 class RootStore {
   candidateStore: CandidatesStore;
