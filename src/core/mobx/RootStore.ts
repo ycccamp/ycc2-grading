@@ -1,20 +1,24 @@
 // import { firestore } from 'firebase';
 import CandidatesStore from './CandidateStore';
 import AuthStore from './AuthStore';
-// import 'firebase/firestore';
+import 'firebase/firestore';
 
 class RootStore {
   candidateStore: CandidatesStore;
 
   authStore: AuthStore;
 
-  constructor() {
-    this.candidateStore = new CandidatesStore(this);
+  firebaseDB: firebase.firestore.Firestore;
+
+  constructor(firebaseDB: firebase.firestore.Firestore) {
+    this.candidateStore = new CandidatesStore(this, firebaseDB);
     this.authStore = new AuthStore();
   }
 
   init(): void {
-    this.candidateStore.fetchCandidate();
+    if (!this.candidateStore.candidates.length) {
+      // this.candidateStore.fetchCandidate();
+    }
   }
 }
 

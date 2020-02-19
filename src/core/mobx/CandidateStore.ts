@@ -7,18 +7,21 @@ import RootStore from './RootStore';
 import TRACKS from '../../constants/tracks';
 import 'firebase/firestore';
 
-const db = firebase.firestore();
 class CandidatesStore {
   rootStore: RootStore;
 
-  @observable candidates: Array<Candidate>;
+  db: firebase.firestore.Firestore;
 
-  constructor(rootStore: RootStore) {
+  @observable candidates: Array<Candidate> = [];
+
+  constructor(rootStore: RootStore, db: firebase.firestore.Firestore) {
     this.rootStore = rootStore;
+    this.db = db;
   }
 
   @action fetchCandidate(): void {
-    db.collection('registration')
+    this.db
+      .collection('registration')
       .where('isLocked', '==', false)
       .get()
       .then(snapshot => {
@@ -69,7 +72,7 @@ class CandidatesStore {
   @action gradeCandidate(candidateId: string, section: string, questionNumber: string, score: number): void {
     this.candidates.forEach(candidate => {
       if (candidate.id === candidateId) {
-        const candidateFirebase = db.collection('registration').doc(candidateId);
+        const candidateFirebase = this.db.collection('registration').doc(candidateId);
         if (section === 'track') {
           candidate.gradingData.track[questionNumber].score = score;
           candidateFirebase.update({
