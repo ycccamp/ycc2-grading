@@ -1,5 +1,6 @@
 import { Box, BoxProps, Button } from '@chakra-ui/core';
 
+import Router from 'next/router';
 import CandidateSelectorProps, { SelectorMode } from '../@types/CandidateSelectorProps';
 import { getAverageScore } from '../core/utils';
 
@@ -22,7 +23,7 @@ const Td: React.FC<BoxProps> = ({ children, bg }) => (
 );
 
 const displayMode = (mode: SelectorMode): string => {
-  if (mode === SelectorMode.Grading) {
+  if (mode === SelectorMode.Track || mode === SelectorMode.General) {
     return 'ให้คะแนน';
   }
   if (mode === SelectorMode.Selecting) {
@@ -31,7 +32,15 @@ const displayMode = (mode: SelectorMode): string => {
   return 'ตรวจสอบประวัติ';
 };
 
-const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates, action }) => {
+const handleClickByMode = (mode: SelectorMode, id: string): void => {
+  if (mode === SelectorMode.Track) {
+    Router.push('/grading/track/[id]', `/grading/track/${id}`);
+  } else if (mode === SelectorMode.General) {
+    Router.push('/grading/general/[id]', `/grading/general/${id}`);
+  }
+};
+
+const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates }) => {
   return (
     <Box as="table" w="100%">
       <Tr bg="pink.700">
@@ -61,7 +70,12 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates,
             <Td>{candidate.gradingData.track.grader}</Td>
             <Td>{candidate.status}</Td>
             <Td>
-              <Button onClick={action || null} variantColor="blue">
+              <Button
+                onClick={(): void => {
+                  handleClickByMode(mode, candidate.id);
+                }}
+                variantColor="blue"
+              >
                 {displayMode(mode)}
               </Button>
             </Td>
