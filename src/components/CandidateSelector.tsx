@@ -1,6 +1,7 @@
 import { Box, BoxProps, Button } from '@chakra-ui/core';
 
 import CandidateSelectorProps, { SelectorMode } from '../@types/CandidateSelectorProps';
+import { getAverageScore } from '../core/utils';
 
 const Th: React.FC<BoxProps> = ({ children, bg }) => (
   <Box textAlign="center" fontFamily="heading" color="white" as="th" bg={bg} py={2}>
@@ -48,8 +49,14 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates,
           <Tr bg="pink.100" key={candidate.id}>
             <Td>{candidate.id}</Td>
             <Td>{candidate.track}</Td>
-            <Td>{candidate.gradingData.general.score}</Td>
-            <Td>{candidate.gradingData.track.score}</Td>
+            <Td>
+              {getAverageScore([
+                candidate.gradingData.general.score.Q1,
+                candidate.gradingData.general.score.Q2,
+                candidate.gradingData.general.score.Q3,
+              ])}
+            </Td>
+            <Td>{getAverageScore([candidate.gradingData.track.score.Q1, candidate.gradingData.track.score.Q2])}</Td>
             <Td>{candidate.gradingData.general.grader}</Td>
             <Td>{candidate.gradingData.track.grader}</Td>
             <Td>{candidate.status}</Td>

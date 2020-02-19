@@ -11,7 +11,11 @@ interface Candidate {
         Q2: string;
         Q3: string;
       };
-      score: number;
+      score: {
+        Q1: number;
+        Q2: number;
+        Q3: number;
+      };
       grader: string;
     };
     track: {
@@ -19,7 +23,10 @@ interface Candidate {
         Q1: string;
         Q2: string;
       };
-      score: number;
+      score: {
+        Q1: number;
+        Q2: number;
+      };
       grader: string;
     };
   };
