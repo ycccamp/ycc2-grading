@@ -5,17 +5,15 @@ import { useLocalStore } from 'mobx-react';
 import firebaseConfig from '../constants/firebase.config';
 import RootStore from '../core/mobx/RootStore';
 
-firebase.initializeApp(firebaseConfig);
-
-const db = firebase.firestore();
-
 const storeContext = React.createContext(null);
 
-const rootStore = new RootStore(db);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const StoreProvider = ({ children }) => {
-  const store = useLocalStore(() => rootStore);
+  const store = useLocalStore(() => new RootStore());
   return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
 };
 
