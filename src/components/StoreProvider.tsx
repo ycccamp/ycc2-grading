@@ -14,10 +14,12 @@ const storeContext = React.createContext(null);
 const rootStore = new RootStore(db);
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const StoreProvider = ({ children }) => {
+const StoreProvider = ({ children }) => {
   const store = useLocalStore(() => rootStore);
   return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
 };
+
+export default StoreProvider;
 
 export const useStore = (): RootStore => {
   const store = React.useContext(storeContext);
