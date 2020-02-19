@@ -4,7 +4,8 @@ import Candidate from './Candidate';
 type ClickAction = (MouseEvent) => void;
 
 export enum SelectorMode {
-  Grading,
+  Track,
+  General,
   Selecting,
 }
 
