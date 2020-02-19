@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { useLocalStore } from 'mobx-react';
-import { observable } from 'mobx';
 import RootStore from '../core/mobx/RootStore';
 import firebase from '../constants/firebase';
 
@@ -13,8 +11,7 @@ const StoreProvider = ({ children }) => {
   useEffect(() => {
     rootStore.init();
   }, []);
-  const store = useLocalStore(() => observable.box(rootStore));
-  return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
+  return <storeContext.Provider value={rootStore}>{children}</storeContext.Provider>;
 };
 
 export default StoreProvider;
