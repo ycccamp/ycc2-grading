@@ -14,6 +14,10 @@ class RootStore {
     this.candidateStore = new CandidatesStore(this);
     this.authStore = new AuthStore();
   }
+
+  init(): void {
+    this.candidateStore.fetchCandidate();
+  }
 }
 
 export default RootStore;
