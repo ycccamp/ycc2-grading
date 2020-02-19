@@ -81,6 +81,7 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
             ความคิดเห็น
           </Heading>
           <Textarea width="100%" placeholder="ความคิดเห็นของกรรมการ" />
+          <Button variantColor="blue">ส่งความคิดเห็น</Button>
           <Stack width="100%" spacing={4}>
             <Box py={4} alignItems="baseline">
               <Heading size="md">พู</Heading>
