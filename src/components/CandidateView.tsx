@@ -17,7 +17,11 @@ const mockCandidates: Array<Candidate> = [
           Q2: '',
           Q3: '',
         },
-        score: 15.6,
+        score: {
+          Q1: 8.0,
+          Q2: 8.0,
+          Q3: 8.0,
+        },
         grader: 'พล',
       },
       track: {
@@ -25,7 +29,10 @@ const mockCandidates: Array<Candidate> = [
           Q1: '',
           Q2: '',
         },
-        score: 12.6,
+        score: {
+          Q1: 7.0,
+          Q2: 8.0,
+        },
         grader: 'อิ้ง',
       },
     },
