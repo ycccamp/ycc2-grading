@@ -1,46 +1,47 @@
-import { Heading, Box, Text, Stack, Textarea, FormControl, Flex, FormLabel, Input } from '@chakra-ui/core';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
-import Layout from '../../../components/Layout';
-import QUESTIONS from '../../../constants/questions';
+import CandidateGradingView from '../../../components/CandidateGradingView';
+import { GradingMode } from '../../../@types/CandidateGradingViewProps';
+import Candidate from '../../../@types/Candidate';
+
+const mockCandidates: Array<Candidate> = [
+  {
+    id: 'njdfgndfonjdfobn',
+    track: 'creative',
+    status: 'กำลังตรวจ',
+    gradingData: {
+      general: {
+        answers: {
+          Q1: '',
+          Q2: '',
+          Q3: '',
+        },
+        score: {
+          Q1: 8.0,
+          Q2: 8.0,
+          Q3: 8.0,
+        },
+        grader: 'พล',
+      },
+      track: {
+        answers: {
+          Q1: '',
+          Q2: '',
+        },
+        score: {
+          Q1: 7.0,
+          Q2: 8.0,
+        },
+        grader: 'อิ้ง',
+      },
+    },
+  },
+];
 
 const PersonGeneralGrading: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  return (
-    <Layout>
-      <Heading size="2xl">{`ให้คะแนนผู้สมัครรหัส : ${id}`}</Heading>
-      <Box w="100%">
-        <Stack spacing={8} py={4}>
-          <Heading size="lg">{QUESTIONS.general.Q1}</Heading>
-          <Text>ksdvgjspgjpgjpsgj</Text>
-          <Heading size="lg">{QUESTIONS.general.Q2}</Heading>
-          <Text>ksdvgjspgjpgjpsgj</Text>
-        </Stack>
-      </Box>
-      <Flex alignItems="baseline" flexWrap="wrap" width="100%">
-        <Box p={3} mb={6} width="60%">
-          <Heading mb={2} size="lg">
-            ความคิดเห็น
-          </Heading>
-          <Textarea width="100%" placeholder="ความคิดเห็นของกรรมการ" />
-          <Stack width="100%" spacing={4}>
-            <Box py={4} alignItems="baseline">
-              <Heading size="md">พู</Heading>
-              <Text>น้องเก่งด้านการให้เหตุผลพอสมควร</Text>
-            </Box>
-          </Stack>
-        </Box>
-        <Box p={3} w="40%">
-          <Heading size="lg">ให้คะแนน</Heading>
-          <FormControl>
-            <FormLabel>คะแนน</FormLabel>
-            <Input type="number" />
-          </FormControl>
-        </Box>
-      </Flex>
-    </Layout>
-  );
+  return <CandidateGradingView id={id.toString()} mode={GradingMode.General} candidate={mockCandidates[0]} />;
 };
 
 export default PersonGeneralGrading;

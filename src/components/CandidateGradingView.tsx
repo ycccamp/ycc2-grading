@@ -1,4 +1,5 @@
-import { Heading, Box, Text, Stack, Textarea, FormControl, Flex, FormLabel, Input } from '@chakra-ui/core';
+/* eslint-disable react/destructuring-assignment */
+import { Heading, Box, Text, Stack, Textarea, FormControl, Flex, FormLabel, Input, Button } from '@chakra-ui/core';
 import Layout from './Layout';
 import QUESTIONS from '../constants/questions';
 import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
@@ -10,17 +11,69 @@ const getTitleMessage = (props: CandidateGradingViewProps): string => {
   return `ให้คะแนนคำถามสาขา ${props.candidate.track} ผู้สมัคร : ${props.id}`;
 };
 
+const Question: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
+  if (mode === GradingMode.General) {
+    return (
+      <Stack spacing={8} py={4}>
+        <Heading size="lg">{QUESTIONS.general.Q1}</Heading>
+        <Text>ksdvgjspgjpgjpsgj</Text>
+        <Heading size="lg">{QUESTIONS.general.Q2}</Heading>
+        <Text>ksdvgjspgjpgjpsgj</Text>
+      </Stack>
+    );
+  }
+  if (mode === GradingMode.Track) {
+    return (
+      <Stack spacing={8} py={4}>
+        <Heading size="lg">{QUESTIONS[candidate.track].Q1}</Heading>
+        <Text>ksdvgjspgjpgjpsgj</Text>
+        <Heading size="lg">{QUESTIONS[candidate.track].Q2}</Heading>
+        <Text>ksdvgjspgjpgjpsgj</Text>
+      </Stack>
+    );
+  }
+
+  return (
+    <Box>
+      <Heading size="2xl">ผิดพลาด</Heading>
+    </Box>
+  );
+};
+
+const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode }) => {
+  if (mode === GradingMode.General) {
+    return (
+      <FormControl>
+        <FormLabel>ให้คะแนนคำถามแรก</FormLabel>
+        <Input type="number" />
+        <Button variantColor="blue">ให้คะแนน</Button>
+        <FormLabel>ให้คะแนนคำถามที่สอง</FormLabel>
+        <Input type="number" />
+        <Button variantColor="blue">ให้คะแนน</Button>
+        <FormLabel>ให้คะแนนคำถามที่สาม</FormLabel>
+        <Input type="number" />
+        <Button variantColor="blue">ให้คะแนน</Button>
+      </FormControl>
+    );
+  }
+  return (
+    <FormControl>
+      <FormLabel>ให้คะแนนคำถามแรก</FormLabel>
+      <Input type="number" />
+      <Button variantColor="blue">ให้คะแนน</Button>
+      <FormLabel>ให้คะแนนคำถามที่สอง</FormLabel>
+      <Input type="number" />
+      <Button variantColor="blue">ให้คะแนน</Button>
+    </FormControl>
+  );
+};
+
 const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
   return (
     <Layout>
       <Heading size="2xl">{getTitleMessage(props)}</Heading>
       <Box w="100%">
-        <Stack spacing={8} py={4}>
-          <Heading size="lg">{QUESTIONS.general.Q1}</Heading>
-          <Text>ksdvgjspgjpgjpsgj</Text>
-          <Heading size="lg">{QUESTIONS.general.Q2}</Heading>
-          <Text>ksdvgjspgjpgjpsgj</Text>
-        </Stack>
+        <Question mode={props.mode} candidate={props.candidate} />
       </Box>
       <Flex alignItems="baseline" flexWrap="wrap" width="100%">
         <Box p={3} mb={6} width="60%">
@@ -37,10 +90,7 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
         </Box>
         <Box p={3} w="40%">
           <Heading size="lg">ให้คะแนน</Heading>
-          <FormControl>
-            <FormLabel>คะแนน</FormLabel>
-            <Input type="number" />
-          </FormControl>
+          <Grading mode={props.mode} />
         </Box>
       </Flex>
     </Layout>
