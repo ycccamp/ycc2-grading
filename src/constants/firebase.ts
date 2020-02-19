@@ -1,3 +1,6 @@
+import * as firebaseApp from 'firebase';
+import 'firebase/firestore';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyBoT3SIWbgGNf7QEqMIL8p3mHUWe7y-HuI',
   authDomain: 'ycc2020.firebaseapp.com',
@@ -9,4 +12,12 @@ const firebaseConfig = {
   measurementId: 'G-6KCXHLX74P',
 };
 
-export default firebaseConfig;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const firebase = (): firebaseApp.app.App => {
+  if (!firebaseApp.apps.length) {
+    return firebaseApp.initializeApp(firebaseConfig);
+  }
+  return firebaseApp.app();
+};
+
+export default firebase;
