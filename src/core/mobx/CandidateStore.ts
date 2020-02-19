@@ -32,7 +32,11 @@ class CandidatesStore {
                     Q2: doc.get('forms.general.Q2') as string,
                     Q3: doc.get('forms.general.Q3') as string,
                   },
-                  score: doc.get('grading.general.score') as number,
+                  score: {
+                    Q1: doc.get('grading.general.Q1.score') as number,
+                    Q2: doc.get('grading.general.Q2.score') as number,
+                    Q3: doc.get('grading.general.Q3.score') as number,
+                  },
                   grader: doc.get('grading.general.grader') as string,
                 },
                 track: {
@@ -40,7 +44,10 @@ class CandidatesStore {
                     Q1: doc.get('forms.track.Q1') as string,
                     Q2: doc.get('forms.track.Q2') as string,
                   },
-                  score: doc.get('grading.track.score') as number,
+                  score: {
+                    Q1: doc.get('grading.track.Q1.score') as number,
+                    Q2: doc.get('grading.track.Q2.score') as number,
+                  },
                   grader: doc.get('grading.track.grader') as string,
                 },
               },
@@ -57,25 +64,29 @@ class CandidatesStore {
   });
 
   // There is no grader option. Please add
-  @action gradeCandidate(candidateId: string, section: string, score: number): void {
+  @action gradeCandidate(candidateId: string, section: string, questionNumber: string, score: number): void {
     this.candidates.forEach(candidate => {
       if (candidate.id === candidateId) {
         const candidateFirebase = this.rootStore.db.collection('registration').doc(candidateId);
         if (section === 'track') {
-          candidate.gradingData.track.score = score;
+          candidate.gradingData.track[questionNumber].score = score;
           candidateFirebase.update({
             grading: {
               track: {
-                score,
+                score: {
+                  [questionNumber]: score,
+                },
               },
             },
           });
         } else if (section === 'general') {
-          candidate.gradingData.general.score = score;
+          candidate.gradingData.general[questionNumber].score = score;
           candidateFirebase.update({
             grading: {
               general: {
-                score,
+                score: {
+                  [questionNumber]: score,
+                },
               },
             },
           });
