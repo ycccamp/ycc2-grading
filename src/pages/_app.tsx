@@ -6,6 +6,7 @@ import { CSSReset } from '@chakra-ui/core';
 import { Global, css } from '@emotion/core';
 import Head from 'next/head';
 import theme from '../theme';
+import StoreProvider from '../components/StoreProvider';
 
 const App = ({ Component, pageProps }) => (
   <>
@@ -26,7 +27,9 @@ const App = ({ Component, pageProps }) => (
           }
         `}
       />
-      <Component {...pageProps} />
+      <StoreProvider>
+        <Component {...pageProps} />
+      </StoreProvider>
     </ThemeProvider>
   </>
 );
