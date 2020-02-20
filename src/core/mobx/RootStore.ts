@@ -12,12 +12,16 @@ class RootStore {
 
   constructor(firebaseDB: firebase.firestore.Firestore) {
     this.candidateStore = new CandidatesStore(this, firebaseDB);
-    this.authStore = new AuthStore();
+    this.authStore = new AuthStore(this);
   }
 
   init(): void {
+    this.fecthData();
+  }
+
+  fecthData(): void {
     if (!this.candidateStore.candidates.length) {
-      // this.candidateStore.fetchCandidate();
+      this.candidateStore.fetchCandidate();
     }
   }
 }
