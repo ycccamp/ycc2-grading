@@ -1,5 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import { Heading, Box, Text, Stack, Textarea, FormControl, Flex, FormLabel, Input, Button } from '@chakra-ui/core';
+import { useRouter } from 'next/router';
 import Layout from './Layout';
 import QUESTIONS from '../constants/questions';
 import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
@@ -69,9 +70,11 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode }) => {
 };
 
 const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <Layout>
-      <Heading size="2xl">{getTitleMessage(props)}</Heading>
+      <Heading size="2xl">{`${getTitleMessage(props)} ${id}`}</Heading>
       <Box w="100%">
         <Question mode={props.mode} candidate={props.candidate} />
       </Box>

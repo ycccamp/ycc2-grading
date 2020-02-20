@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
-import CandidateGradingView from '../../../components/CandidateGradingView';
-import { GradingMode } from '../../../@types/CandidateGradingViewProps';
-import Candidate from '../../../@types/Candidate';
+import { useEffect, useState } from 'react';
+import CandidateGradingView from '../../../../components/CandidateGradingView';
+import { GradingMode } from '../../../../@types/CandidateGradingViewProps';
+import Candidate from '../../../../@types/Candidate';
 
 const mockCandidates: Array<Candidate> = [
   {
@@ -38,10 +39,14 @@ const mockCandidates: Array<Candidate> = [
   },
 ];
 
-const PersonTrackGrading: NextPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  return <CandidateGradingView id={id.toString()} mode={GradingMode.Track} candidate={mockCandidates[0]} />;
+const PersonGeneralGrading: NextPage = () => {
+  const [candidateId, setCandidateId] = useState<string>();
+  useEffect(() => {
+    const router = useRouter();
+    const { id } = router.query;
+    setCandidateId(id.toString());
+  }, []);
+  return <CandidateGradingView id={candidateId} mode={GradingMode.General} candidate={mockCandidates[0]} />;
 };
 
-export default PersonTrackGrading;
+export default PersonGeneralGrading;
