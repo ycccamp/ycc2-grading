@@ -39,7 +39,7 @@ const mockCandidates: Array<Candidate> = [
 ];
 
 const PersonTrackGrading: NextPage = () => {
-  return <CandidateGradingView id={mockCandidates[0].id} mode={GradingMode.Track} candidate={mockCandidates[0]} />;
+  return <CandidateGradingView mode={GradingMode.Track} candidate={mockCandidates[0]} />;
 };
 
 export default PersonTrackGrading;

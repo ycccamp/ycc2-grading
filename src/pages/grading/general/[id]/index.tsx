@@ -40,13 +40,7 @@ const mockCandidates: Array<Candidate> = [
 ];
 
 const PersonGeneralGrading: NextPage = () => {
-  const [candidateId, setCandidateId] = useState<string>();
-  useEffect(() => {
-    const router = useRouter();
-    const { id } = router.query;
-    setCandidateId(id.toString());
-  }, []);
-  return <CandidateGradingView id={candidateId} mode={GradingMode.General} candidate={mockCandidates[0]} />;
+  return <CandidateGradingView mode={GradingMode.General} candidate={mockCandidates[0]} />;
 };
 
 export default PersonGeneralGrading;
