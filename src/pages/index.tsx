@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/display-name */
 import { Flex, Box, Heading, Stack, Button } from '@chakra-ui/core';
-import Link from 'next/link';
 import React from 'react';
 import { useStore } from '../components/StoreProvider';
 
