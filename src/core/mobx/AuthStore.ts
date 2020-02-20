@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { auth as authModule } from 'firebase';
+import { User, auth as authModule } from 'firebase';
 import Router from 'next/router';
 import firebase from '../../constants/firebase';
 
@@ -15,11 +15,15 @@ class AuthStore {
   @action authenticate(): void {
     auth.signInWithPopup(provider).then(result => {
       if (result.credential) {
-        this.name = result.user.displayName;
-        this.role = 'creative';
+        this.setUser(result.user);
         Router.push('/dashboard');
       }
     });
+  }
+
+  @action setUser(user: User): void {
+    this.name = user.displayName;
+    this.role = 'general';
   }
 }
 export default AuthStore;
