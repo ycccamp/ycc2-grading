@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx';
 import { auth as authModule } from 'firebase';
+import Router from 'next/router';
 import firebase from '../../constants/firebase';
 
 const auth = firebase().auth();
@@ -16,6 +17,7 @@ class AuthStore {
       if (result.credential) {
         this.name = result.user.displayName;
         this.role = 'creative';
+        Router.push('/dashboard');
       }
     });
   }

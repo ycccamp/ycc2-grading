@@ -9,7 +9,7 @@ import { useStore } from '../components/StoreProvider';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const LinkButton = React.forwardRef((props: any, ref) => {
   return (
-    <Button as="a" href={props.href} onClick={props.onClick} ref={ref} {...props}>
+    <Button cursor="pointer" as="a" href={props.href} onClick={props.onClick} ref={ref} {...props}>
       {props.children}
     </Button>
   );
