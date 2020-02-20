@@ -7,6 +7,7 @@ import { Global, css } from '@emotion/core';
 import Head from 'next/head';
 import theme from '../theme';
 import StoreProvider from '../components/StoreProvider';
+import Authentication from '../components/Authentication';
 
 const App = ({ Component, pageProps }) => {
   return (
@@ -29,7 +30,9 @@ const App = ({ Component, pageProps }) => {
           `}
         />
         <StoreProvider>
-          <Component {...pageProps} />
+          <Authentication>
+            <Component {...pageProps} />
+          </Authentication>
         </StoreProvider>
       </ThemeProvider>
     </>
