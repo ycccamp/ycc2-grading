@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import RootStore from '../core/mobx/RootStore';
-import firebase from '../constants/firebase';
 
 const storeContext = React.createContext(null);
 
+const rootStore = new RootStore();
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const StoreProvider = ({ children }) => {
-  const db = firebase().firestore();
-  const rootStore = new RootStore(db);
   useEffect(() => {
     rootStore.init();
   }, []);

@@ -1,27 +1,24 @@
 /* eslint-disable no-param-reassign */
 import { observable, action } from 'mobx';
 import { computedFn } from 'mobx-utils';
-import * as firebase from 'firebase';
 import Candidate from '../../@types/Candidate';
 import RootStore from './RootStore';
 import TRACKS from '../../constants/tracks';
-import 'firebase/firestore';
+import firebase from '../../constants/firebase';
+
+const db = firebase().firestore();
 
 class CandidatesStore {
   rootStore: RootStore;
 
-  db: firebase.firestore.Firestore;
-
   @observable candidates: Array<Candidate> = [];
 
-  constructor(rootStore: RootStore, db: firebase.firestore.Firestore) {
+  constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
-    this.db = db;
   }
 
   @action fetchCandidate(): void {
-    this.db
-      .collection('registration')
+    db.collection('registration')
       .where('isLocked', '==', false)
       .get()
       .then(snapshot => {
@@ -61,8 +58,6 @@ class CandidatesStore {
           });
         }
       });
-
-    console.log(this.candidates[0].id);
   }
 
   // eslint-disable-next-line func-names
@@ -74,7 +69,7 @@ class CandidatesStore {
   @action gradeCandidate(candidateId: string, section: string, questionNumber: string, score: number): void {
     this.candidates.forEach(candidate => {
       if (candidate.id === candidateId) {
-        const candidateFirebase = this.db.collection('registration').doc(candidateId);
+        const candidateFirebase = db.collection('registration').doc(candidateId);
         if (section === 'track') {
           candidate.gradingData.track[questionNumber].score = score;
           candidateFirebase.update({

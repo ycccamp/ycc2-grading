@@ -1,6 +1,7 @@
 import { Box, BoxProps, Button } from '@chakra-ui/core';
 
 import Router from 'next/router';
+import React from 'react';
 import CandidateSelectorProps, { SelectorMode } from '../@types/CandidateSelectorProps';
 import { getAverageScore } from '../core/utils';
 import { useStore } from './StoreProvider';
@@ -42,7 +43,7 @@ const handleClickByMode = (mode: SelectorMode, id: string): void => {
 };
 
 const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates }) => {
-  const { candidateStore } = useStore();
+  const store = useStore();
   return (
     <>
       <Box as="table" w="100%">
@@ -56,7 +57,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
           <Th>สถานะ</Th>
           <Th>{displayMode(mode)}</Th>
         </Tr>
-        {candidates.map(candidate => {
+        {store.candidateStore.candidates.map(candidate => {
           return (
             <Tr bg="pink.100" key={candidate.id}>
               <Td>{candidate.id}</Td>
@@ -88,7 +89,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
       </Box>
       <Button
         onClick={(): void => {
-          candidateStore.fetchCandidate();
+          store.candidateStore.fetchCandidate();
         }}
         variantColor="red"
         mt={4}
@@ -99,4 +100,4 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
   );
 };
 
-export default CandidateSelector;
+export default React.memo(CandidateSelector);

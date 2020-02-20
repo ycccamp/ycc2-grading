@@ -1,9 +1,9 @@
-import { Flex, Box, Stack, Button } from '@chakra-ui/core';
+import { Flex, Box, Stack, Button, Heading } from '@chakra-ui/core';
 import DashbaordLink from './DashboardLink';
 import { useStore } from './StoreProvider';
 
 const Layout: React.FC = ({ children }) => {
-  const { authStore } = useStore();
+  const store = useStore();
   return (
     <Flex justify="flex-start" width="100vw" height="100%">
       <Box bg="gray.700" color="gray.100" height="100%" width={1 / 6}>
@@ -15,9 +15,10 @@ const Layout: React.FC = ({ children }) => {
           <DashbaordLink text="ผู้ผ่านการคัดเลือก" link="/selected" />
         </Stack>
         <Stack mt={10} alignItems="center" width="100%">
+          <Heading size="md">{store.authStore.name}</Heading>
           <Button
             onClick={(): void => {
-              authStore.logout();
+              store.authStore.logout();
             }}
             textAlign="center"
             width="90%"

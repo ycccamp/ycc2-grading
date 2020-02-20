@@ -11,8 +11,8 @@ class RootStore {
 
   firebaseDB: firebase.firestore.Firestore;
 
-  constructor(firebaseDB: firebase.firestore.Firestore) {
-    this.candidateStore = new CandidatesStore(this, firebaseDB);
+  constructor() {
+    this.candidateStore = new CandidatesStore(this);
     this.authStore = new AuthStore(this);
   }
 
@@ -21,13 +21,11 @@ class RootStore {
   }
 
   fecthData(): void {
-    if (!this.candidateStore.candidates.length) {
-      firebase()
-        .auth()
-        .onAuthStateChanged(() => {
-          this.candidateStore.fetchCandidate();
-        });
-    }
+    firebase()
+      .auth()
+      .onAuthStateChanged(() => {
+        this.candidateStore.fetchCandidate();
+      });
   }
 }
 
