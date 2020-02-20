@@ -62,7 +62,7 @@ class CandidatesStore {
         }
       });
 
-    console.log(this.candidates);
+    console.log(this.candidates[0].id);
   }
 
   // eslint-disable-next-line func-names
