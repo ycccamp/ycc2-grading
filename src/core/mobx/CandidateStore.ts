@@ -61,6 +61,8 @@ class CandidatesStore {
           });
         }
       });
+
+    console.log(this.candidates);
   }
 
   // eslint-disable-next-line func-names
