@@ -33,5 +33,13 @@ class AuthStore {
     this.name = user.displayName;
     this.role = 'general';
   }
+
+  @action logout(): void {
+    auth.signOut().then(() => {
+      this.name = '';
+      this.role = '';
+      Router.push('/');
+    });
+  }
 }
 export default AuthStore;

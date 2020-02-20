@@ -2,6 +2,7 @@
 import CandidatesStore from './CandidateStore';
 import AuthStore from './AuthStore';
 import 'firebase/firestore';
+import firebase from '../../constants/firebase';
 
 class RootStore {
   candidateStore: CandidatesStore;
@@ -21,7 +22,11 @@ class RootStore {
 
   fecthData(): void {
     if (!this.candidateStore.candidates.length) {
-      this.candidateStore.fetchCandidate();
+      firebase()
+        .auth()
+        .onAuthStateChanged(() => {
+          this.candidateStore.fetchCandidate();
+        });
     }
   }
 }
