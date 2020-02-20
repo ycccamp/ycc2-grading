@@ -3,6 +3,7 @@ import { Box, BoxProps, Button } from '@chakra-ui/core';
 import Router from 'next/router';
 import CandidateSelectorProps, { SelectorMode } from '../@types/CandidateSelectorProps';
 import { getAverageScore } from '../core/utils';
+import { useStore } from './StoreProvider';
 
 const Th: React.FC<BoxProps> = ({ children, bg }) => (
   <Box textAlign="center" fontFamily="heading" color="white" as="th" bg={bg} py={2}>
@@ -41,48 +42,60 @@ const handleClickByMode = (mode: SelectorMode, id: string): void => {
 };
 
 const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates }) => {
+  const { candidateStore } = useStore();
   return (
-    <Box as="table" w="100%">
-      <Tr bg="pink.700">
-        <Th>รหัสอ้างอิง</Th>
-        <Th>สาขา</Th>
-        <Th>คะแนนคำถามกลาง</Th>
-        <Th>คะแนนคำถามสาขา</Th>
-        <Th>ผู้ตรวจคำถามกลาง</Th>
-        <Th>ผู้ตรวจคำถามสาขา</Th>
-        <Th>สถานะ</Th>
-        <Th>{displayMode(mode)}</Th>
-      </Tr>
-      {candidates.map(candidate => {
-        return (
-          <Tr bg="pink.100" key={candidate.id}>
-            <Td>{candidate.id}</Td>
-            <Td>{candidate.track}</Td>
-            <Td>
-              {getAverageScore([
-                candidate.gradingData.general.score.Q1,
-                candidate.gradingData.general.score.Q2,
-                candidate.gradingData.general.score.Q3,
-              ])}
-            </Td>
-            <Td>{getAverageScore([candidate.gradingData.track.score.Q1, candidate.gradingData.track.score.Q2])}</Td>
-            <Td>{candidate.gradingData.general.grader}</Td>
-            <Td>{candidate.gradingData.track.grader}</Td>
-            <Td>{candidate.status}</Td>
-            <Td>
-              <Button
-                onClick={(): void => {
-                  handleClickByMode(mode, candidate.id);
-                }}
-                variantColor="blue"
-              >
-                {displayMode(mode)}
-              </Button>
-            </Td>
-          </Tr>
-        );
-      })}
-    </Box>
+    <>
+      <Box as="table" w="100%">
+        <Tr bg="pink.700">
+          <Th>รหัสอ้างอิง</Th>
+          <Th>สาขา</Th>
+          <Th>คะแนนคำถามกลาง</Th>
+          <Th>คะแนนคำถามสาขา</Th>
+          <Th>ผู้ตรวจคำถามกลาง</Th>
+          <Th>ผู้ตรวจคำถามสาขา</Th>
+          <Th>สถานะ</Th>
+          <Th>{displayMode(mode)}</Th>
+        </Tr>
+        {candidates.map(candidate => {
+          return (
+            <Tr bg="pink.100" key={candidate.id}>
+              <Td>{candidate.id}</Td>
+              <Td>{candidate.track}</Td>
+              <Td>
+                {getAverageScore([
+                  candidate.gradingData.general.score.Q1,
+                  candidate.gradingData.general.score.Q2,
+                  candidate.gradingData.general.score.Q3,
+                ])}
+              </Td>
+              <Td>{getAverageScore([candidate.gradingData.track.score.Q1, candidate.gradingData.track.score.Q2])}</Td>
+              <Td>{candidate.gradingData.general.grader}</Td>
+              <Td>{candidate.gradingData.track.grader}</Td>
+              <Td>{candidate.status}</Td>
+              <Td>
+                <Button
+                  onClick={(): void => {
+                    handleClickByMode(mode, candidate.id);
+                  }}
+                  variantColor="blue"
+                >
+                  {displayMode(mode)}
+                </Button>
+              </Td>
+            </Tr>
+          );
+        })}
+      </Box>
+      <Button
+        onClick={(): void => {
+          candidateStore.fetchCandidate();
+        }}
+        variantColor="red"
+        mt={4}
+      >
+        โหลดข้อมูลใหม่
+      </Button>
+    </>
   );
 };
 
