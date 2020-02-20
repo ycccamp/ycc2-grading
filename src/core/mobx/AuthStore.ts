@@ -1,4 +1,9 @@
 import { observable, action } from 'mobx';
+import { auth as authModule } from 'firebase';
+import firebase from '../../constants/firebase';
+
+const auth = firebase().auth();
+const provider = new authModule.GoogleAuthProvider();
 
 class AuthStore {
   @observable name = '';
@@ -7,7 +12,12 @@ class AuthStore {
 
   // You may work on this method
   @action authenticate(): void {
-    this.name = 'x';
+    auth.signInWithPopup(provider).then(result => {
+      if (result.credential) {
+        this.name = result.user.displayName;
+        this.role = 'creative';
+      }
+    });
   }
 }
 export default AuthStore;
