@@ -6,6 +6,7 @@ import firebase from '../../constants/firebase';
 import RootStore from './RootStore';
 
 const auth = firebase().auth();
+const db = firebase().firestore();
 const provider = new authModule.GoogleAuthProvider();
 
 class AuthStore {
@@ -13,7 +14,7 @@ class AuthStore {
 
   @persist @observable name = '';
 
-  @persist @observable role = '';
+  @persist('list') @observable roles: Array<string> = [];
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -30,15 +31,19 @@ class AuthStore {
     });
   }
 
-  @action setUser(user: User): void {
-    this.name = user.displayName;
-    this.role = 'general';
+  @action async setUser(user: User): Promise<void> {
+    const snapshot = await db
+      .collection('grading')
+      .doc(user.uid)
+      .get();
+    this.name = snapshot.get('name');
+    this.roles = snapshot.get('roles') as Array<string>;
   }
 
   @action logout(): void {
     auth.signOut().then(() => {
       this.name = '';
-      this.role = '';
+      this.roles = [];
       Router.push('/');
     });
   }
