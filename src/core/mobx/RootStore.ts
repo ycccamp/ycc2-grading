@@ -27,6 +27,10 @@ class RootStore {
         this.candidateStore.fetchCandidate();
       });
   }
+
+  retrieveGrader(): string {
+    return this.authStore.name;
+  }
 }
 
 export default RootStore;

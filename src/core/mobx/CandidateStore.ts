@@ -96,6 +96,7 @@ class CandidatesStore {
 
   // There is no grader option. Please add
   @action gradeCandidate(candidateId: string, section: string, questionNumber: string, score: number): void {
+    const grader = this.rootStore.retrieveGrader();
     this.candidates.forEach(candidate => {
       if (candidate.id === candidateId) {
         const candidateFirebase = db.collection('registration').doc(candidateId);
@@ -107,6 +108,7 @@ class CandidatesStore {
                 score: {
                   [questionNumber]: score,
                 },
+                grader,
               },
             },
           });
@@ -118,6 +120,7 @@ class CandidatesStore {
                 score: {
                   [questionNumber]: score,
                 },
+                grader,
               },
             },
           });
