@@ -23,6 +23,8 @@ const Question: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidat
         <Text>{candidate.gradingData.general.answers.Q1}</Text>
         <Heading size="lg">{QUESTIONS.general.Q2}</Heading>
         <Text>{candidate.gradingData.general.answers.Q2}</Text>
+        <Heading size="lg">{QUESTIONS.general.Q3}</Heading>
+        <Text>{candidate.gradingData.general.answers.Q3}</Text>
       </Stack>
     );
   }
