@@ -7,6 +7,7 @@ import RootStore from './RootStore';
 import TRACKS from '../../constants/tracks';
 import firebase from '../../constants/firebase';
 import { getAverageScore } from '../utils';
+import general from '../../pages/grading/general';
 
 const db = firebase().firestore();
 
@@ -19,51 +20,59 @@ class CandidatesStore {
     this.rootStore = rootStore;
   }
 
-  @action fetchCandidate(): void {
+  @action async fetchCandidate(): Promise<void> {
     db.collection('registration')
       .where('isLocked', '==', true)
       .get()
       .then(snapshot => {
         if (!snapshot.empty) {
-          snapshot.forEach(doc => {
+          snapshot.forEach(async doc => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const formData: any = {};
-            db.collection('registration')
+            const generalSnapshot = await db
+              .collection('registration')
               .doc(doc.id)
               .collection('forms')
-              .get()
-              .then(subSnapshot => {
-                if (!subSnapshot.empty) {
-                  subSnapshot.forEach(subDoc => {
-                    if (subDoc.id === 'general') {
-                      formData.general = subDoc.ref;
-                    } else if (subDoc.id === 'track') {
-                      formData.track = subDoc.ref;
-                    }
-                  });
-                }
-              });
+              .doc('general')
+              .get();
+            formData.general = {
+              Q1: generalSnapshot.get('Q1'),
+              Q2: generalSnapshot.get('Q2'),
+              Q3: generalSnapshot.get('Q3'),
+            };
+            const trackSnapshot = await db
+              .collection('registration')
+              .doc(doc.id)
+              .collection('forms')
+              .doc('track')
+              .get();
+            formData.track = {
+              Q1: trackSnapshot.get('Q1'),
+              Q2: trackSnapshot.get('Q2'),
+              Q3: trackSnapshot.get('Q3'),
+            };
+
             this.candidates.push({
               id: doc.id,
               track: doc.get('track'),
               gradingData: {
                 general: {
                   answers: {
-                    Q1: formData.general.get('Q1') as string,
-                    Q2: formData.general.get('Q2') as string,
-                    Q3: formData.general.get('Q3') as string,
+                    Q1: formData.general.Q1 as string,
+                    Q2: formData.general.Q2 as string,
+                    Q3: formData.general.Q3 as string,
                   },
                   score: {
-                    Q1: formData.general.get('Q1_Score') as number,
-                    Q2: formData.general.get('Q2_Score') as number,
-                    Q3: formData.general.get('Q2_Score') as number,
+                    Q1: formData.general.Q1_score || 0,
+                    Q2: formData.general.Q2_score || 0,
+                    Q3: formData.general.Q2_score || 0,
                   },
                   grader: doc.get('grading.general.grader') as string,
                 },
                 track: {
                   answers: {
-                    Q1: formData.track.get('Q1') as string,
-                    Q2: formData.track.get('Q2') as string,
+                    Q1: formData.track.Q1 as string,
+                    Q2: formData.track.Q2 as string,
                   },
                   score: {
                     Q1: doc.get('grading.track.Q1.score') as number,
