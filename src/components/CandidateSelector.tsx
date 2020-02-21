@@ -1,10 +1,10 @@
-import { Box, BoxProps, Button, Stack, Input, InputGroup, InputLeftElement, Icon } from '@chakra-ui/core';
+import { Box, BoxProps, Button, Stack, Input, InputGroup, InputLeftElement, Icon, Select } from '@chakra-ui/core';
 
 import Router from 'next/router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import CandidateSelectorProps, { SelectorMode } from '../@types/CandidateSelectorProps';
-import { getAverageScore } from '../core/utils';
+import { getAverageScore, paginate, getMaxPage } from '../core/utils';
 import { useStore } from './StoreProvider';
 import Candidate from '../@types/Candidate';
 
@@ -39,9 +39,9 @@ const displayMode = (mode: SelectorMode): string => {
 const searchForMatch = (search: string, candidates: Array<Candidate>): Array<Candidate> => {
   if (search.length) {
     return (
-      candidates.filter(c => c.id.match(search)) ||
-      candidates.filter(c => c.gradingData.general.grader.match(search)) ||
-      candidates.filter(c => c.gradingData.track.grader.match(search))
+      candidates.filter(c => c.id.includes(search)) ||
+      candidates.filter(c => c.gradingData.general.grader.includes(search)) ||
+      candidates.filter(c => c.gradingData.track.grader.includes(search))
     );
   }
   return candidates;
@@ -57,11 +57,17 @@ const handleClickByMode = (mode: SelectorMode, id: string): void => {
 
 const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates }) => {
   const store = useStore();
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  useEffect(() => {
+    if (page >= getMaxPage(searchForMatch(search, candidates), 10)) {
+      setPage(1);
+    }
+  }, [page]);
   return (
     <>
-      <Stack py={2} isInline spacing={4}>
-        <InputGroup border="pink.400">
+      <Stack w="100%" py={2} isInline spacing={4}>
+        <InputGroup w="30%" border="pink.400">
           <InputLeftElement>
             <Icon name="search" color="pink.300" />
           </InputLeftElement>
@@ -71,6 +77,17 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
             type="text"
           />
         </InputGroup>
+        <Select
+          w="20%"
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>): void => setPage((e.target.value as unknown) as number)}
+        >
+          {[...Array(getMaxPage(searchForMatch(search, candidates), 10))].map((_, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <option value={i + 1} key={i + 1}>
+              {i + 1}
+            </option>
+          ))}
+        </Select>
       </Stack>
       <Box as="table" w="100%">
         <Tr bg="pink.700">
@@ -83,7 +100,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
           <Th>สถานะ</Th>
           <Th>{displayMode(mode)}</Th>
         </Tr>
-        {searchForMatch(search, candidates)
+        {paginate(searchForMatch(search, candidates), 10, page)
           .slice(0, 10)
           .map(candidate => {
             return (
