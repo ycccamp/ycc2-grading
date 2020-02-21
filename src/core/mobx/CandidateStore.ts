@@ -5,6 +5,7 @@ import Candidate from '../../@types/Candidate';
 import RootStore from './RootStore';
 import TRACKS from '../../constants/tracks';
 import firebase from '../../constants/firebase';
+import { getAverageScore } from '../utils';
 
 const db = firebase().firestore();
 
@@ -64,6 +65,32 @@ class CandidatesStore {
   getCandidatesByTrack = computedFn(function(track: TRACKS): Array<Candidate> {
     return this.candidates.filter((candidate: { track: string }) => candidate.track === track);
   });
+
+  getCandidatesByPercentile = computedFn(
+    (percentile: number): Array<Candidate> => {
+      const sortedCandidates = this.candidates.sort(
+        (a, b) =>
+          getAverageScore([
+            getAverageScore([
+              a.gradingData.general.score.Q1,
+              a.gradingData.general.score.Q2,
+              a.gradingData.general.score.Q3,
+            ]),
+            getAverageScore([a.gradingData.track.score.Q1, a.gradingData.track.score.Q2]),
+          ]) -
+          getAverageScore([
+            getAverageScore([
+              b.gradingData.general.score.Q1,
+              b.gradingData.general.score.Q2,
+              b.gradingData.general.score.Q3,
+            ]),
+            getAverageScore([b.gradingData.track.score.Q1, b.gradingData.track.score.Q2]),
+          ]),
+      );
+      const startingIndex = Math.floor((percentile * (sortedCandidates.length + 1)) / 100);
+      return this.candidates.slice(startingIndex);
+    },
+  );
 
   // There is no grader option. Please add
   @action gradeCandidate(candidateId: string, section: string, questionNumber: string, score: number): void {
