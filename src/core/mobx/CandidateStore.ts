@@ -21,32 +21,49 @@ class CandidatesStore {
 
   @action fetchCandidate(): void {
     db.collection('registration')
-      .where('isLocked', '==', 'true')
+      .where('isLocked', '==', true)
       .get()
       .then(snapshot => {
         if (!snapshot.empty) {
           snapshot.forEach(doc => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const formData: any = {};
+            db.collection('registration')
+              .doc(doc.id)
+              .collection('forms')
+              .get()
+              .then(subSnapshot => {
+                if (!subSnapshot.empty) {
+                  subSnapshot.forEach(subDoc => {
+                    if (subDoc.id === 'general') {
+                      formData.general = subDoc.ref;
+                    } else if (subDoc.id === 'track') {
+                      formData.track = subDoc.ref;
+                    }
+                  });
+                }
+              });
             this.candidates.push({
               id: doc.id,
               track: doc.get('track'),
               gradingData: {
                 general: {
                   answers: {
-                    Q1: doc.get('forms.general.Q1') as string,
-                    Q2: doc.get('forms.general.Q2') as string,
-                    Q3: doc.get('forms.general.Q3') as string,
+                    Q1: formData.general.get('Q1') as string,
+                    Q2: formData.general.get('Q2') as string,
+                    Q3: formData.general.get('Q3') as string,
                   },
                   score: {
-                    Q1: doc.get('grading.general.Q1.score') as number,
-                    Q2: doc.get('grading.general.Q2.score') as number,
-                    Q3: doc.get('grading.general.Q3.score') as number,
+                    Q1: formData.general.get('Q1_Score') as number,
+                    Q2: formData.general.get('Q2_Score') as number,
+                    Q3: formData.general.get('Q2_Score') as number,
                   },
                   grader: doc.get('grading.general.grader') as string,
                 },
                 track: {
                   answers: {
-                    Q1: doc.get('forms.track.Q1') as string,
-                    Q2: doc.get('forms.track.Q2') as string,
+                    Q1: formData.track.get('Q1') as string,
+                    Q2: formData.track.get('Q2') as string,
                   },
                   score: {
                     Q1: doc.get('grading.track.Q1.score') as number,
