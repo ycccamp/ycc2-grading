@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import { User, auth as authModule } from 'firebase';
 import Router from 'next/router';
+import { persist, create } from 'mobx-persist';
 import firebase from '../../constants/firebase';
 import RootStore from './RootStore';
 
@@ -10,9 +11,9 @@ const provider = new authModule.GoogleAuthProvider();
 class AuthStore {
   rootStore: RootStore;
 
-  @observable name = '';
+  @persist @observable name = '';
 
-  @observable role = '';
+  @persist @observable role = '';
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
