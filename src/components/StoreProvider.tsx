@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import RootStore from '../core/mobx/RootStore';
 import { create } from 'mobx-persist';
+import RootStore from '../core/mobx/RootStore';
 
 const storeContext = React.createContext(null);
 
@@ -10,7 +10,7 @@ const rootStore = new RootStore();
 const StoreProvider = ({ children }) => {
   useEffect(() => {
     rootStore.init();
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       const hydrate = create({
         storage: localStorage, // or AsyncStorage in react-native.
         // default: localStorage
@@ -24,7 +24,6 @@ const StoreProvider = ({ children }) => {
         console.log('CandidateStore hydarted');
       });
     }
-    
   }, []);
   return <storeContext.Provider value={rootStore}>{children}</storeContext.Provider>;
 };

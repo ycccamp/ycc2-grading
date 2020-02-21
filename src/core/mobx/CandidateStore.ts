@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { observable, action } from 'mobx';
 import { computedFn } from 'mobx-utils';
-import { persist, create } from 'mobx-persist';
+import { persist } from 'mobx-persist';
 import Candidate from '../../@types/Candidate';
 import RootStore from './RootStore';
 import TRACKS from '../../constants/tracks';

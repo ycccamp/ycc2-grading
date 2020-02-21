@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import { User, auth as authModule } from 'firebase';
 import Router from 'next/router';
-import { persist, create } from 'mobx-persist';
+import { persist } from 'mobx-persist';
 import firebase from '../../constants/firebase';
 import RootStore from './RootStore';
 
