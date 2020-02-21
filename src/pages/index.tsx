@@ -2,6 +2,7 @@
 /* eslint-disable react/display-name */
 import { Flex, Box, Heading, Stack, Button } from '@chakra-ui/core';
 import React from 'react';
+import { observer } from 'mobx-react';
 import { useStore } from '../components/StoreProvider';
 
 // TODO: Add proper type
@@ -30,4 +31,4 @@ const Index: React.FC = () => {
   );
 };
 
-export default Index;
+export default observer(Index);

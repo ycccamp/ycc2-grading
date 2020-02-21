@@ -1,4 +1,5 @@
 import { Flex, Box, Stack, Button, Heading } from '@chakra-ui/core';
+import { observer } from 'mobx-react';
 import DashbaordLink from './DashboardLink';
 import { useStore } from './StoreProvider';
 
@@ -36,4 +37,4 @@ const Layout: React.FC = ({ children }) => {
   );
 };
 
-export default Layout;
+export default observer(Layout);

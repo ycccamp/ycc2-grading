@@ -2,6 +2,7 @@ import { Box, BoxProps, Button } from '@chakra-ui/core';
 
 import Router from 'next/router';
 import React from 'react';
+import { observer } from 'mobx-react';
 import CandidateSelectorProps, { SelectorMode } from '../@types/CandidateSelectorProps';
 import { getAverageScore } from '../core/utils';
 import { useStore } from './StoreProvider';
@@ -46,7 +47,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
   const store = useStore();
   return (
     <>
-      <Box as="table" w="100%">
+      <Box overflowY="scroll" h="90%" as="table" w="100%">
         <Tr bg="pink.700">
           <Th>รหัสอ้างอิง</Th>
           <Th>สาขา</Th>
@@ -57,7 +58,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
           <Th>สถานะ</Th>
           <Th>{displayMode(mode)}</Th>
         </Tr>
-        {store.candidateStore.candidates.map(candidate => {
+        {candidates.map(candidate => {
           return (
             <Tr bg="pink.100" key={candidate.id}>
               <Td>{candidate.id}</Td>
@@ -100,4 +101,4 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
   );
 };
 
-export default React.memo(CandidateSelector);
+export default observer(CandidateSelector);

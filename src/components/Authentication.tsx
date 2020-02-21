@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { observer } from 'mobx-react';
 import firebase from '../constants/firebase';
 import { useStore } from './StoreProvider';
 
@@ -22,4 +23,4 @@ const Authentication: React.FC = ({ children }) => {
   return <>{children}</>;
 };
 
-export default Authentication;
+export default observer(Authentication);
