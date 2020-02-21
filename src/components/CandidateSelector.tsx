@@ -61,8 +61,10 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
   return (
     <>
       <Stack py={2} isInline spacing={4}>
-        <InputGroup>
-          <InputLeftElement children={<Icon name="search" color="pink.300" />} />
+        <InputGroup border="pink.400">
+          <InputLeftElement>
+            <Icon name="search" color="pink.300" />
+          </InputLeftElement>
           <Input
             value={search}
             onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setSearch(e.target.value)}
