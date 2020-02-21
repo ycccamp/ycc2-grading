@@ -21,7 +21,7 @@ class CandidatesStore {
 
   @action fetchCandidate(): void {
     db.collection('registration')
-      .where('isLocked', '==', false)
+      .where('isLocked', '==', 'true')
       .get()
       .then(snapshot => {
         if (!snapshot.empty) {
