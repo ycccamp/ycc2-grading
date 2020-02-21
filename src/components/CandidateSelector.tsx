@@ -1,11 +1,12 @@
-import { Box, BoxProps, Button } from '@chakra-ui/core';
+import { Box, BoxProps, Button, Stack, Input, InputGroup, InputLeftElement, Icon } from '@chakra-ui/core';
 
 import Router from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import CandidateSelectorProps, { SelectorMode } from '../@types/CandidateSelectorProps';
 import { getAverageScore } from '../core/utils';
 import { useStore } from './StoreProvider';
+import Candidate from '../@types/Candidate';
 
 const Th: React.FC<BoxProps> = ({ children, bg }) => (
   <Box textAlign="center" fontFamily="heading" color="white" as="th" bg={bg} py={2}>
@@ -35,6 +36,17 @@ const displayMode = (mode: SelectorMode): string => {
   return 'ตรวจสอบประวัติ';
 };
 
+const searchForMatch = (search: string, candidates: Array<Candidate>): Array<Candidate> => {
+  if (search.length) {
+    return (
+      candidates.filter(c => c.id.match(search)) ||
+      candidates.filter(c => c.gradingData.general.grader.match(search)) ||
+      candidates.filter(c => c.gradingData.track.grader.match(search))
+    );
+  }
+  return candidates;
+};
+
 const handleClickByMode = (mode: SelectorMode, id: string): void => {
   if (mode === SelectorMode.Track) {
     Router.push('/grading/track/[id]', `/grading/track/${id}`);
@@ -45,9 +57,20 @@ const handleClickByMode = (mode: SelectorMode, id: string): void => {
 
 const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates }) => {
   const store = useStore();
+  const [search, setSearch] = useState('');
   return (
     <>
-      <Box overflowY="scroll" h="90%" as="table" w="100%">
+      <Stack py={2} isInline spacing={4}>
+        <InputGroup>
+          <InputLeftElement children={<Icon name="search" color="pink.300" />} />
+          <Input
+            value={search}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setSearch(e.target.value)}
+            type="text"
+          />
+        </InputGroup>
+      </Stack>
+      <Box as="table" w="100%">
         <Tr bg="pink.700">
           <Th>รหัสอ้างอิง</Th>
           <Th>สาขา</Th>
@@ -58,35 +81,37 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
           <Th>สถานะ</Th>
           <Th>{displayMode(mode)}</Th>
         </Tr>
-        {candidates.map(candidate => {
-          return (
-            <Tr bg="pink.100" key={candidate.id}>
-              <Td>{candidate.id}</Td>
-              <Td>{candidate.track}</Td>
-              <Td>
-                {getAverageScore([
-                  candidate.gradingData.general.score.Q1,
-                  candidate.gradingData.general.score.Q2,
-                  candidate.gradingData.general.score.Q3,
-                ])}
-              </Td>
-              <Td>{getAverageScore([candidate.gradingData.track.score.Q1, candidate.gradingData.track.score.Q2])}</Td>
-              <Td>{candidate.gradingData.general.grader}</Td>
-              <Td>{candidate.gradingData.track.grader}</Td>
-              <Td>{candidate.status}</Td>
-              <Td>
-                <Button
-                  onClick={(): void => {
-                    handleClickByMode(mode, candidate.id);
-                  }}
-                  variantColor="blue"
-                >
-                  {displayMode(mode)}
-                </Button>
-              </Td>
-            </Tr>
-          );
-        })}
+        {searchForMatch(search, candidates)
+          .slice(0, 10)
+          .map(candidate => {
+            return (
+              <Tr bg="pink.100" key={candidate.id}>
+                <Td>{candidate.id}</Td>
+                <Td>{candidate.track}</Td>
+                <Td>
+                  {getAverageScore([
+                    candidate.gradingData.general.score.Q1,
+                    candidate.gradingData.general.score.Q2,
+                    candidate.gradingData.general.score.Q3,
+                  ])}
+                </Td>
+                <Td>{getAverageScore([candidate.gradingData.track.score.Q1, candidate.gradingData.track.score.Q2])}</Td>
+                <Td>{candidate.gradingData.general.grader}</Td>
+                <Td>{candidate.gradingData.track.grader}</Td>
+                <Td>{candidate.status}</Td>
+                <Td>
+                  <Button
+                    onClick={(): void => {
+                      handleClickByMode(mode, candidate.id);
+                    }}
+                    variantColor="blue"
+                  >
+                    {displayMode(mode)}
+                  </Button>
+                </Td>
+              </Tr>
+            );
+          })}
       </Box>
       <Button
         onClick={(): void => {
