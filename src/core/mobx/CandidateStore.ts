@@ -62,9 +62,11 @@ class CandidatesStore {
   }
 
   // eslint-disable-next-line func-names
-  getCandidatesByTrack = computedFn(function(track: TRACKS): Array<Candidate> {
-    return this.candidates.filter((candidate: { track: string }) => candidate.track === track);
-  });
+  getCandidatesByTrack = computedFn(
+    (track: TRACKS): Array<Candidate> => {
+      return this.candidates.filter((candidate: { track: string }) => candidate.track === track);
+    },
+  );
 
   getCandidatesByPercentile = computedFn(
     (percentile: number): Array<Candidate> => {
