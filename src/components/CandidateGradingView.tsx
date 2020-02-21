@@ -1,15 +1,18 @@
 /* eslint-disable react/destructuring-assignment */
 import { Heading, Box, Text, Stack, Textarea, FormControl, Flex, FormLabel, Input, Button } from '@chakra-ui/core';
 import { useRouter } from 'next/router';
+import { observer } from 'mobx-react';
 import Layout from './Layout';
 import QUESTIONS from '../constants/questions';
 import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
-// TODO: Please change the question base on mode and track
-const getTitleMessage = (props: CandidateGradingViewProps): string => {
+import { useStore } from './StoreProvider';
+import Candidate from '../@types/Candidate';
+
+const getTitleMessage = (props: CandidateGradingViewProps, candidate: Candidate): string => {
   if (props.mode === GradingMode.General) {
-    return `ให้คะแนนคำถามกลางผู้สมัคร : ${props.candidate.id}`;
+    return `ให้คะแนนคำถามกลางผู้สมัคร : ${candidate.id}`;
   }
-  return `ให้คะแนนคำถามสาขา ${props.candidate.track} ผู้สมัคร : ${props.candidate.id}`;
+  return `ให้คะแนนคำถามสาขา ${candidate.track} ผู้สมัคร : ${candidate.id}`;
 };
 
 const Question: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
@@ -17,9 +20,9 @@ const Question: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidat
     return (
       <Stack spacing={8} py={4}>
         <Heading size="lg">{QUESTIONS.general.Q1}</Heading>
-        <Text>ksdvgjspgjpgjpsgj</Text>
+        <Text>{candidate.gradingData.general.answers.Q1}</Text>
         <Heading size="lg">{QUESTIONS.general.Q2}</Heading>
-        <Text>ksdvgjspgjpgjpsgj</Text>
+        <Text>{candidate.gradingData.general.answers.Q2}</Text>
       </Stack>
     );
   }
@@ -27,9 +30,9 @@ const Question: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidat
     return (
       <Stack spacing={8} py={4}>
         <Heading size="lg">{QUESTIONS[candidate.track].Q1}</Heading>
-        <Text>ksdvgjspgjpgjpsgj</Text>
+        <Text>{candidate.gradingData.track.answers.Q1}</Text>
         <Heading size="lg">{QUESTIONS[candidate.track].Q2}</Heading>
-        <Text>ksdvgjspgjpgjpsgj</Text>
+        <Text>{candidate.gradingData.track.answers.Q2}</Text>
       </Stack>
     );
   }
@@ -74,13 +77,15 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode }) => {
 };
 
 const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
+  const store = useStore();
   const router = useRouter();
   const { id } = router.query;
+  const candidate = store.candidateStore.candidates.find(c => c.id === id.toString());
   return (
     <Layout>
-      <Heading size="2xl">{`${getTitleMessage(props)} ${id}`}</Heading>
+      <Heading size="2xl">{getTitleMessage(props, candidate)}</Heading>
       <Box w="100%">
-        <Question mode={props.mode} candidate={props.candidate} />
+        <Question mode={props.mode} candidate={candidate} />
       </Box>
       <Flex alignItems="baseline" flexWrap="wrap" width="100%">
         <Box py={3} mb={6} width="60%">
@@ -107,4 +112,4 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
   );
 };
 
-export default CandidateGradingView;
+export default observer(CandidateGradingView);
