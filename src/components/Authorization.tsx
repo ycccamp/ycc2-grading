@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { observer } from 'mobx-react';
 import { useStore } from './StoreProvider';
 import AuthorizationProps from '../@types/AuthorizationProps';
 
@@ -15,4 +16,4 @@ const Authorization: React.FC<AuthorizationProps> = ({ children, accessibleRoles
   return <>{children}</>;
 };
 
-export default Authorization;
+export default observer(Authorization);
