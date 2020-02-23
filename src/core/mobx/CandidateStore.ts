@@ -7,7 +7,6 @@ import RootStore from './RootStore';
 import TRACKS from '../../constants/tracks';
 import firebase from '../../constants/firebase';
 import { getAverageScore } from '../utils';
-import general from '../../pages/grading/general';
 
 const db = firebase().firestore();
 
