@@ -1,13 +1,16 @@
 import { Box, Text, Heading, Stack, Textarea, Button } from '@chakra-ui/core';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useStore } from './StoreProvider';
 import firebase from '../constants/firebase';
+import Comment from '../@types/Comment';
+import { observer } from 'mobx-react';
 
 const db = firebase().firestore();
 
 const CandidateCommentView: React.FC = () => {
   const store = useStore();
+  const [comments, setComments] = useState<Array<Comment>>();
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
@@ -16,7 +19,16 @@ const CandidateCommentView: React.FC = () => {
       .doc(id.toString())
       .collection('grading')
       .doc('comments')
-      .onSnapshot(snapshot => {});
+      .onSnapshot(snapshot => {
+        setComments([
+          ...comments,
+          {
+            id: snapshot.id,
+            name: snapshot.get('name'),
+            body: snapshot.get('body'),
+          },
+        ]);
+      });
     return (): void => {
       unsub();
     };
@@ -31,10 +43,12 @@ const CandidateCommentView: React.FC = () => {
         <Button variantColor="blue">ส่งความคิดเห็น</Button>
       </Stack>
       <Stack width="100%" spacing={4}>
-        <Box py={4} alignItems="baseline">
-          <Heading size="md">พู</Heading>
-          <Text>น้องเก่งด้านการให้เหตุผลพอสมควร</Text>
-        </Box>
+        {comments.map(c => (
+          <Box key={c.id} py={4} alignItems="baseline">
+            <Heading size="md">{c.name}</Heading>
+            <Text>{c.body}</Text>
+          </Box>
+        ))}
       </Stack>
     </Box>
   );
