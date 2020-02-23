@@ -17,17 +17,20 @@ const CandidateCommentView: React.FC = () => {
     const unsub = db
       .collection('registration')
       .doc(id.toString())
-      .collection('grading')
-      .doc('comments')
-      .onSnapshot(snapshot => {
-        setComments([
-          ...comments,
-          {
-            id: snapshot.id,
-            name: snapshot.get('name'),
-            body: snapshot.get('body'),
-          },
-        ]);
+      .collection('comments')
+      .onSnapshot(snap => {
+        snap.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            setComments([
+              ...comments,
+              {
+                id: change.doc.id,
+                name: change.doc.get('name'),
+                body: change.doc.get('body'),
+              },
+            ]);
+          }
+        });
       });
     return (): void => {
       unsub();
