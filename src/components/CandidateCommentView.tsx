@@ -1,10 +1,10 @@
 import { Box, Text, Heading, Stack, Textarea, Button } from '@chakra-ui/core';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { observer } from 'mobx-react';
 import { useStore } from './StoreProvider';
 import firebase from '../constants/firebase';
 import Comment from '../@types/Comment';
-import { observer } from 'mobx-react';
 
 const db = firebase().firestore();
 
