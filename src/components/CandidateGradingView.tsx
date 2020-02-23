@@ -7,6 +7,7 @@ import QUESTIONS from '../constants/questions';
 import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
 import { useStore } from './StoreProvider';
 import Candidate from '../@types/Candidate';
+import CandidateCommentView from './CandidateCommentView';
 
 const getTitleMessage = (props: CandidateGradingViewProps, candidate: Candidate): string => {
   if (props.mode === GradingMode.General) {
@@ -90,21 +91,7 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
         <Question mode={props.mode} candidate={candidate} />
       </Box>
       <Flex alignItems="baseline" flexWrap="wrap" width="100%">
-        <Box py={3} mb={6} width="60%">
-          <Heading mb={2} size="lg">
-            ความคิดเห็น
-          </Heading>
-          <Stack spacing={4}>
-            <Textarea width="100%" placeholder="ความคิดเห็นของกรรมการ" />
-            <Button variantColor="blue">ส่งความคิดเห็น</Button>
-          </Stack>
-          <Stack width="100%" spacing={4}>
-            <Box py={4} alignItems="baseline">
-              <Heading size="md">พู</Heading>
-              <Text>น้องเก่งด้านการให้เหตุผลพอสมควร</Text>
-            </Box>
-          </Stack>
-        </Box>
+        <CandidateCommentView />
         <Box p={3} w="40%">
           <Heading size="lg">ให้คะแนน</Heading>
           <Grading mode={props.mode} />

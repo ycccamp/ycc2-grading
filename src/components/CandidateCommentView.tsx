@@ -43,12 +43,18 @@ const CandidateCommentView: React.FC = () => {
         <Button variantColor="blue">ส่งความคิดเห็น</Button>
       </Stack>
       <Stack width="100%" spacing={4}>
-        {comments.map(c => (
-          <Box key={c.id} py={4} alignItems="baseline">
-            <Heading size="md">{c.name}</Heading>
-            <Text>{c.body}</Text>
+        {comments ? (
+          comments.map(c => (
+            <Box key={c.id} py={4} alignItems="baseline">
+              <Heading size="md">{c.name}</Heading>
+              <Text>{c.body}</Text>
+            </Box>
+          ))
+        ) : (
+          <Box py={4} alignItems="baseline">
+            <Text color="red.500">ไม่มีความคิดเห็น</Text>
           </Box>
-        ))}
+        )}
       </Stack>
     </Box>
   );
