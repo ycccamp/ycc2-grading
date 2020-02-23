@@ -14,27 +14,22 @@ const CandidateCommentView: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
-    const unsub = db
-      .collection('registration')
+    db.collection('registration')
       .doc(id.toString())
       .collection('comments')
-      .onSnapshot(snap => {
-        snap.docChanges().forEach(change => {
-          if (change.type === 'added') {
-            setComments([
-              ...comments,
-              {
-                id: change.doc.id,
-                name: change.doc.get('name'),
-                body: change.doc.get('body'),
-              },
-            ]);
-          }
+      .get()
+      .then(doc => {
+        doc.forEach(rawComment => {
+          setComments(prev => [
+            ...prev,
+            {
+              id: rawComment.id,
+              name: rawComment.get('name'),
+              body: rawComment.get('body'),
+            },
+          ]);
         });
       });
-    return (): void => {
-      unsub();
-    };
   }, []);
   return (
     <Box py={3} mb={6} width="60%">
