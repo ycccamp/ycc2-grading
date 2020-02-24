@@ -52,7 +52,7 @@ const filterCandidateByTrack = (track: string, candidates: Array<Candidate>): Ar
     return candidates;
   }
   return candidates.filter(c => c.track === track);
-}
+};
 
 const handleClickByMode = (mode: SelectorMode, id: string): void => {
   if (mode === SelectorMode.Track) {
@@ -98,12 +98,13 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
         </Select>
         <Select
           w="20%"
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>): void => setTrack((e.target.value as string))}>
-            <option value="all">All</option>
-            <option value="creative">Creative</option>
-            <option value="developer">Developer</option>
-            <option value="design">Developer</option>
-          </Select>
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>): void => setTrack(e.target.value as string)}
+        >
+          <option value="all">All</option>
+          <option value="creative">Creative</option>
+          <option value="developer">Developer</option>
+          <option value="design">Developer</option>
+        </Select>
       </Stack>
       <Box as="table" w="100%">
         <Tr bg="pink.700">
@@ -116,7 +117,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
           <Th>สถานะ</Th>
           <Th>{displayMode(mode)}</Th>
         </Tr>
-        {paginate(searchForMatch(search, filterCandidateByTrack(track ,candidates)), 10, page)
+        {paginate(searchForMatch(search, filterCandidateByTrack(track, candidates)), 10, page)
           .slice(0, 10)
           .map(candidate => {
             return (
@@ -157,7 +158,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
       >
         โหลดข้อมูลใหม่
       </Button>
-    </HTMLSelectElement>
+    </>
   );
 };
 
