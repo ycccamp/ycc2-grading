@@ -13,11 +13,13 @@ const DesignerAnswer: React.FC<DesignerAnswerProps> = ({ candidate }) => {
       imageRef
         .child(`${candidate.id}/image`)
         .listAll()
-        .then(c => {
-          c.items.forEach(async i => {
-            const retrievedUrl = await i.getDownloadURL();
-            setUrl(retrievedUrl);
-          });
+        .then(async c => {
+          if (typeof c === 'undefined') {
+            setUrl('https://loremflickr.com/320/240/jojo');
+          } else {
+            const imageUrl = await c.items[0].getDownloadURL();
+            setUrl(imageUrl);
+          }
         });
     }
   }, []);
