@@ -10,7 +10,7 @@ const db = firebase().firestore();
 
 const CandidateCommentView: React.FC = () => {
   const store = useStore();
-  const [comments, setComments] = useState<Array<Comment>>();
+  const [comments, setComments] = useState<Array<Comment>>([]);
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {

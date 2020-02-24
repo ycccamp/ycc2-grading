@@ -19,14 +19,13 @@ class CandidatesStore {
     this.rootStore = rootStore;
   }
 
-  @action init() {
+  @action init(): void {
     if (!this.candidates.length) {
       this.fetchCandidate();
     }
   }
 
   @action async fetchCandidate(): Promise<void> {
-    this.candidates = [];
     db.collection('registration')
       .where('isLocked', '==', true)
       .get()

@@ -10,6 +10,9 @@ import Candidate from '../@types/Candidate';
 import CandidateCommentView from './CandidateCommentView';
 
 const getTitleMessage = (props: CandidateGradingViewProps, candidate: Candidate): string => {
+  if (!candidate) {
+    return `กำลังโหลดข้อมูล`;
+  }
   if (props.mode === GradingMode.General) {
     return `ให้คะแนนคำถามกลางผู้สมัคร : ${candidate.id}`;
   }
@@ -17,6 +20,9 @@ const getTitleMessage = (props: CandidateGradingViewProps, candidate: Candidate)
 };
 
 const Question: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
+  if (!candidate) {
+    return <Text color="red.500">กำลังโหลดข้อมูล</Text>;
+  }
   if (mode === GradingMode.General) {
     return (
       <Stack spacing={8} py={4}>
