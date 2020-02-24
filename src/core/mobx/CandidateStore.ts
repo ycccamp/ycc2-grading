@@ -52,7 +52,7 @@ class CandidatesStore {
               .doc('track')
               .get();
             formData.track = {
-              Q1: trackSnapshot.get('Q1'),
+              Q1: trackSnapshot.get('Q1') || trackSnapshot.get('Q1__Upload'),
               Q2: trackSnapshot.get('Q2'),
               Q3: trackSnapshot.get('Q3'),
             };
@@ -127,6 +127,7 @@ class CandidatesStore {
   );
 
   // There is no grader option. Please add
+  // Do not use this method for now.
   @action gradeCandidate(candidateId: string, section: string, questionNumber: string, score: number): void {
     const grader = this.rootStore.retrieveGrader();
     this.candidates.forEach(candidate => {
