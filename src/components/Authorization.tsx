@@ -3,15 +3,22 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react';
 import { useStore } from './StoreProvider';
 import AuthorizationProps from '../@types/AuthorizationProps';
+import firebase from '../constants/firebase';
 
 const Authorization: React.FC<AuthorizationProps> = ({ children, accessibleRoles }) => {
   const store = useStore();
   const router = useRouter();
   useEffect(() => {
-    const { roles } = store.authStore;
-    if (!roles.find(role => accessibleRoles.includes(role))) {
-      router.push('/dashboard');
-    }
+    firebase()
+      .auth()
+      .onAuthStateChanged(user => {
+        if (user) {
+          const { roles } = store.authStore;
+          if (typeof roles.find(role => accessibleRoles.includes(role)) === 'undefined') {
+            router.push('/dashboard');
+          }
+        }
+      });
   }, []);
   return <>{children}</>;
 };

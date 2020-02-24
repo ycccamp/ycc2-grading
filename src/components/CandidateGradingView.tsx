@@ -2,6 +2,7 @@
 import { Heading, Box, Text, Stack, Textarea, FormControl, Flex, FormLabel, Input, Button } from '@chakra-ui/core';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react';
+import { useState, useEffect } from 'react';
 import Layout from './Layout';
 import QUESTIONS from '../constants/questions';
 import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
@@ -91,7 +92,18 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
   const store = useStore();
   const router = useRouter();
   const { id } = router.query;
-  const candidate = store.candidateStore.candidates.find(c => c.id === id.toString());
+  const [candidate, setCandidate] = useState<Candidate>();
+  useEffect(() => {
+    const fetchedCandidate = store.candidateStore.candidates.find(c => c.id === id.toString());
+    setCandidate(fetchedCandidate);
+  }, []);
+  if (typeof candidate === 'undefined') {
+    return (
+      <Layout>
+        <Heading size="2xl">กำลังโหลด</Heading>
+      </Layout>
+    );
+  }
   return (
     <Layout>
       <Heading size="2xl">{getTitleMessage(props, candidate)}</Heading>
