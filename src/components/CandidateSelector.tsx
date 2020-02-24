@@ -65,7 +65,7 @@ const handleClickByMode = (mode: SelectorMode, id: string): void => {
 const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates }) => {
   const store = useStore();
   const [search, setSearch] = useState<string>('');
-  const [track, setTrack] = useState<string>('All');
+  const [track, setTrack] = useState<string>('all');
   const [page, setPage] = useState<number>(1);
   useEffect(() => {
     if (page >= getMaxPage(searchForMatch(search, candidates), 10)) {
@@ -103,7 +103,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
           <option value="all">All</option>
           <option value="creative">Creative</option>
           <option value="developer">Developer</option>
-          <option value="design">Developer</option>
+          <option value="designer">Designer</option>
         </Select>
       </Stack>
       <Box as="table" w="100%">
