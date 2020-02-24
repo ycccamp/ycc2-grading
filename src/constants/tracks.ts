@@ -1,3 +1,3 @@
-type TRACKS = 'developer' | 'creative' | 'design';
+type TRACKS = 'developer' | 'creative' | 'designer';
 
 export default TRACKS;

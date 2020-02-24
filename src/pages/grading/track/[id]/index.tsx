@@ -5,7 +5,7 @@ import Authorization from '../../../../components/Authorization';
 
 const PersonTrackGrading: NextPage = () => {
   return (
-    <Authorization accessibleRoles={['admin', 'creative', 'developer', 'design']}>
+    <Authorization accessibleRoles={['admin', 'creative', 'developer', 'designer']}>
       <CandidateGradingView mode={GradingMode.Track} />
     </Authorization>
   );
