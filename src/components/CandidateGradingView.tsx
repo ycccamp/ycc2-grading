@@ -8,6 +8,7 @@ import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradi
 import { useStore } from './StoreProvider';
 import Candidate from '../@types/Candidate';
 import CandidateCommentView from './CandidateCommentView';
+import DesignerAnswer from './DesignerAnswer';
 
 const getTitleMessage = (props: CandidateGradingViewProps, candidate: Candidate): string => {
   if (!candidate) {
@@ -39,6 +40,7 @@ const Question: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidat
     return (
       <Stack spacing={8} py={4}>
         <Heading size="lg">{QUESTIONS[candidate.track].Q1}</Heading>
+        {candidate.track === 'designer' ? <DesignerAnswer candidate={candidate} /> : ''}
         <Text>{candidate.gradingData.track.answers.Q1}</Text>
         <Heading size="lg">{QUESTIONS[candidate.track].Q2}</Heading>
         <Text>{candidate.gradingData.track.answers.Q2}</Text>

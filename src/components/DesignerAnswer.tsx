@@ -4,17 +4,18 @@ import DesignerAnswerProps from '../@types/DesignerAnswerProps';
 import firebase from '../constants/firebase';
 
 const storage = firebase().storage();
-const imageRef = storage.ref().child('design');
+const imageRef = storage.ref().child('registation/design');
 
 const DesignerAnswer: React.FC<DesignerAnswerProps> = ({ candidate }) => {
   const [url, setUrl] = useState<string>('');
   useEffect(() => {
     if (candidate.track === 'designer') {
       imageRef
-        .child(candidate.id)
+        .child(`${candidate.id}/image`)
         .listAll()
         .then(c => {
-          c.items[0].getDownloadURL().then(retrievedUrl => {
+          c.items.forEach(async i => {
+            const retrievedUrl = await i.getDownloadURL();
             setUrl(retrievedUrl);
           });
         });
@@ -23,7 +24,7 @@ const DesignerAnswer: React.FC<DesignerAnswerProps> = ({ candidate }) => {
   if (candidate.track === 'designer') {
     return (
       <Box>
-        <Image src={url} alt="YCC Logo by candidate" />
+        <Image size="300px" src={url} alt="YCC Logo by candidate" />
       </Box>
     );
   }
