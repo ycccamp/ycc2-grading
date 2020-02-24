@@ -24,7 +24,7 @@ class RootStore {
     firebase()
       .auth()
       .onAuthStateChanged(() => {
-        this.candidateStore.fetchCandidate();
+        this.candidateStore.init();
       });
   }
 
