@@ -20,7 +20,7 @@ class CandidatesStore {
   }
 
   @action init(): void {
-    if (!this.candidates.length) {
+    if (this.candidates.length === 0) {
       this.fetchCandidate();
     }
   }
