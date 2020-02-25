@@ -1,8 +1,10 @@
 import { FormControl, Stack, FormLabel, Input, Button, Box, Flex, BoxProps } from '@chakra-ui/core';
 import { useEffect, useState, ReactNode } from 'react';
+import { observer } from 'mobx-react';
 import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
 import firebase from '../constants/firebase';
 import { Score } from '../@types/Candidate';
+import { useStore } from './StoreProvider';
 
 const db = firebase().firestore();
 
@@ -27,7 +29,15 @@ const Td: React.FC<BoxProps> = ({ children }) => (
 const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
   const [generalScores, setGeneralScores] = useState<Array<Score>>([]);
   const [trackScores, setTrackScores] = useState<Array<Score>>([]);
+  const [gradingScore, setGradingScore] = useState<Score>({
+    grader: '',
+    Q1: 0,
+    Q2: 0,
+    Q3: 0,
+  });
+  const { authStore } = useStore();
   useEffect(() => {
+    setGradingScore(prev => ({ ...prev, grader: authStore.name }));
     const unsubGeneral = db
       .collection('registration')
       .doc(candidate.id)
@@ -80,21 +90,48 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
         <Stack width="100%" spacing={4}>
           <Flex width="100%">
             <FormLabel width="39%">ให้คะแนนคำถามที 1</FormLabel>
-            <Input max="10" mx={2} type="number" width="10%" />
+            <Input
+              value={gradingScore.Q1}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                setGradingScore(prev => ({ ...prev, Q1: (e.target.value as unknown) as number }));
+              }}
+              max="10"
+              mx={2}
+              type="number"
+              width="10%"
+            />
             <Button variantColor="green" width="20%">
               บันทึกคะแนน
             </Button>
           </Flex>
           <Flex width="100%">
             <FormLabel width="39%">ให้คะแนนคำถามที 2</FormLabel>
-            <Input max="10" mx={2} type="number" width="10%" />
+            <Input
+              value={gradingScore.Q2}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                setGradingScore(prev => ({ ...prev, Q2: (e.target.value as unknown) as number }));
+              }}
+              max="10"
+              mx={2}
+              type="number"
+              width="10%"
+            />
             <Button variantColor="green" width="20%">
               บันทึกคะแนน
             </Button>
           </Flex>
           <Flex width="100%">
             <FormLabel width="39%">ให้คะแนนคำถามที 3</FormLabel>
-            <Input max="10" mx={2} type="number" width="10%" />
+            <Input
+              value={gradingScore.Q3}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                setGradingScore(prev => ({ ...prev, Q3: (e.target.value as unknown) as number }));
+              }}
+              max="10"
+              mx={2}
+              type="number"
+              width="10%"
+            />
             <Button variantColor="green" width="20%">
               บันทึกคะแนน
             </Button>
@@ -131,4 +168,4 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
   );
 };
 
-export default Grading;
+export default observer(Grading);
