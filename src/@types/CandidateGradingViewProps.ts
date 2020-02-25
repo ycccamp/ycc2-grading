@@ -2,8 +2,8 @@ import Candidate from './Candidate';
 import TRACKS from '../constants/tracks';
 
 export enum GradingMode {
-  General,
-  Track,
+  General = 'general',
+  Track = 'track',
 }
 
 interface CandidateGradingViewProps {
