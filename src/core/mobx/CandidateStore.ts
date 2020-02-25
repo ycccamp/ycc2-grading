@@ -66,6 +66,15 @@ class CandidatesStore {
               .doc(doc.id)
               .collection('grading')
               .doc('general')
+              .collection('score')
+              .get();
+
+            const trackScoreSnapshot = await db
+              .collection('registration')
+              .doc(doc.id)
+              .collection('grading')
+              .doc('track')
+              .collection('score')
               .get();
 
             this.candidates.push({
@@ -78,14 +87,23 @@ class CandidatesStore {
                     Q2: formData.general.Q2 as string,
                     Q3: formData.general.Q3 as string,
                   },
-                  score: [],
+                  score: generalScoreSnapshot.docs.map(score => ({
+                    grader: score.id,
+                    Q1: score.get('Q1'),
+                    Q2: score.get('Q2'),
+                    Q3: score.get('Q3'),
+                  })),
                 },
                 track: {
                   answers: {
                     Q1: formData.track.Q1 as string,
                     Q2: formData.track.Q2 as string,
                   },
-                  score: [],
+                  score: trackScoreSnapshot.docs.map(score => ({
+                    grader: score.id,
+                    Q1: score.get('Q1'),
+                    Q2: score.get('Q2'),
+                  })),
                 },
               },
               status: doc.get('grading.status') as string,
@@ -105,7 +123,7 @@ class CandidatesStore {
     },
   );
 
-/*  getCandidatesByPercentile = computedFn(
+  /*  getCandidatesByPercentile = computedFn(
     (percentile: number): Array<Candidate> => {
       const sortedCandidates = this.candidates.sort(
         (a, b) =>
