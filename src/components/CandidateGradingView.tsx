@@ -10,6 +10,7 @@ import { useStore } from './StoreProvider';
 import Candidate from '../@types/Candidate';
 import CandidateCommentView from './CandidateCommentView';
 import DesignerAnswer from './DesignerAnswer';
+import Grading from './Grading';
 
 const getTitleMessage = (props: CandidateGradingViewProps, candidate: Candidate): string => {
   if (!candidate) {
@@ -58,38 +59,6 @@ const RawQuestion: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candi
 
 const Question = observer(RawQuestion);
 
-const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode }) => {
-  if (mode === GradingMode.General) {
-    return (
-      <FormControl>
-        <Stack spacing={4}>
-          <FormLabel>ให้คะแนนคำถามแรก</FormLabel>
-          <Input type="number" />
-          <Button variantColor="blue">ให้คะแนน</Button>
-          <FormLabel>ให้คะแนนคำถามที่สอง</FormLabel>
-          <Input type="number" />
-          <Button variantColor="blue">ให้คะแนน</Button>
-          <FormLabel>ให้คะแนนคำถามที่สาม</FormLabel>
-          <Input type="number" />
-          <Button variantColor="blue">ให้คะแนน</Button>
-        </Stack>
-      </FormControl>
-    );
-  }
-  return (
-    <FormControl>
-      <Stack spacing={4}>
-        <FormLabel>ให้คะแนนคำถามแรก</FormLabel>
-        <Input type="number" />
-        <Button variantColor="blue">ให้คะแนน</Button>
-        <FormLabel>ให้คะแนนคำถามที่สอง</FormLabel>
-        <Input type="number" />
-        <Button variantColor="blue">ให้คะแนน</Button>
-      </Stack>
-    </FormControl>
-  );
-};
-
 const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
   const store = useStore();
   const router = useRouter();
@@ -101,7 +70,7 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
   }, [candidate]);
   return (
     <>
-      {(typeof candidate !== 'undefined') ? (
+      {typeof candidate !== 'undefined' ? (
         <Layout>
           <Heading size="2xl">{getTitleMessage(props, candidate)}</Heading>
           <Box w="100%">
