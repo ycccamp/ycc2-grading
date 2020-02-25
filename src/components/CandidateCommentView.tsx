@@ -10,18 +10,31 @@ import Candidate from '../@types/Candidate';
 const db = firebase().firestore();
 
 const CandidateCommentView: React.FC<{ candidate: Candidate }> = ({ candidate }) => {
+  const store = useStore();
   const [comments, setComments] = useState<Array<Comment>>([]);
+  const [commentBody, setCommentBody] = useState<string>('');
 
+  const changeCommentBody = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setCommentBody(e.target.value);
+  };
+
+  const sendComment = (): void => {
+    if (commentBody.length > 0) {
+      db.collection('registration')
+        .doc(candidate.id)
+        .collection('comments')
+        .add({
+          name: store.authStore.name,
+          body: commentBody,
+        })
+        .then(() => {
+          setCommentBody('');
+        });
+    }
+  };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const addComment = (rawComment: any): void => {
-    setComments(prev => [
-      {
-        ...prev,
-        id: rawComment.id,
-        name: rawComment.get('name'),
-        body: rawComment.get('body'),
-      },
-    ]);
+    setComments(prev => [...prev, { id: rawComment.id, name: rawComment.get('name'), body: rawComment.get('body') }]);
   };
 
   useEffect(() => {
@@ -42,8 +55,15 @@ const CandidateCommentView: React.FC<{ candidate: Candidate }> = ({ candidate })
         ความคิดเห็น
       </Heading>
       <Stack spacing={4}>
-        <Textarea width="100%" placeholder="ความคิดเห็นของกรรมการ" />
-        <Button variantColor="blue">ส่งความคิดเห็น</Button>
+        <Textarea
+          value={commentBody}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => changeCommentBody(e)}
+          width="100%"
+          placeholder="ความคิดเห็นของกรรมการ"
+        />
+        <Button onClick={sendComment} variantColor="blue">
+          ส่งความคิดเห็น
+        </Button>
       </Stack>
       <Stack width="100%" spacing={4}>
         {comments ? (

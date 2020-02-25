@@ -15,6 +15,10 @@ class CandidatesStore {
 
   @persist('list') @observable candidates: Array<Candidate> = [];
 
+  @persist @observable supposedLength = 0;
+
+  @persist @observable isLoaded = false;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
   }
@@ -90,8 +94,11 @@ class CandidatesStore {
             });
           });
         }
+        this.isLoaded = true;
       });
   }
+
+  // @action asyncFetchCandidateById;
 
   // eslint-disable-next-line func-names
   getCandidatesByTrack = computedFn(

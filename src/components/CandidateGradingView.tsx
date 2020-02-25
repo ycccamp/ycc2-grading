@@ -95,26 +95,32 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
   const router = useRouter();
   const { id } = router.query;
   const [candidate, setCandidate] = useState<Candidate>();
-  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const fetchedCandidate = store.candidateStore.candidates.find(c => c.id === id.toString());
     setCandidate(fetchedCandidate);
-    setLoaded(true);
   }, [candidate]);
   return (
-    <Layout>
-      <Heading size="2xl">{loaded ? getTitleMessage(props, candidate) : 'Loading'}</Heading>
-      <Box w="100%">
-        <Question mode={props.mode} candidate={candidate} />
-      </Box>
-      <Flex alignItems="baseline" flexWrap="wrap" width="100%">
-        {loaded ? <CandidateCommentView candidate={candidate} /> : <Text>กำลังโหลดข้อมูล</Text>}
-        <Box p={3} w="40%">
-          <Heading size="lg">ให้คะแนน</Heading>
-          <Grading mode={props.mode} />
-        </Box>
-      </Flex>
-    </Layout>
+    <>
+      {(typeof candidate !== 'undefined') ? (
+        <Layout>
+          <Heading size="2xl">{getTitleMessage(props, candidate)}</Heading>
+          <Box w="100%">
+            <Question mode={props.mode} candidate={candidate} />
+          </Box>
+          <Flex alignItems="baseline" flexWrap="wrap" width="100%">
+            <CandidateCommentView candidate={candidate} />
+            <Box p={3} w="40%">
+              <Heading size="lg">ให้คะแนน</Heading>
+              <Grading mode={props.mode} />
+            </Box>
+          </Flex>
+        </Layout>
+      ) : (
+        <Layout>
+          <Text>กำลังโหลดข้อมูล</Text>
+        </Layout>
+      )}
+    </>
   );
 };
 
