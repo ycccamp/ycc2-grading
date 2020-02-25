@@ -126,9 +126,9 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
             <FormLabel width="39%">ให้คะแนนคำถามที 3</FormLabel>
             <Input
               value={gradingScore.Q3}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore(prev => ({ ...prev, Q3: (e.target.value as unknown) as number }));
-              }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+                setGradingScore(prev => ({ ...prev, Q3: (e.target.value as unknown) as number }))
+              }
               max="10"
               mx={2}
               type="number"

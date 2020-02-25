@@ -80,7 +80,7 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
             <CandidateCommentView candidate={candidate} />
             <Box p={3} w="40%">
               <Heading size="lg">ให้คะแนน</Heading>
-              <Grading mode={props.mode} />
+              <Grading candidate={candidate} mode={props.mode} />
             </Box>
           </Flex>
         </Layout>
