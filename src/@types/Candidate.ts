@@ -11,23 +11,23 @@ interface Candidate {
         Q2: string;
         Q3: string;
       };
-      score: {
+      score: Array<{
+        grader: string;
         Q1: number;
         Q2: number;
         Q3: number;
-      };
-      grader: string;
+      }>;
     };
     track: {
       answers: {
         Q1: string;
         Q2: string;
       };
-      score: {
+      score: Array<{
+        grader: string;
         Q1: number;
         Q2: number;
-      };
-      grader: string;
+      }>;
     };
   };
 }

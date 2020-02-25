@@ -61,6 +61,13 @@ class CandidatesStore {
               Q3: trackSnapshot.get('Q3'),
             };
 
+            const generalScoreSnapshot = await db
+              .collection('registration')
+              .doc(doc.id)
+              .collection('grading')
+              .doc('general')
+              .get();
+
             this.candidates.push({
               id: doc.id,
               track: doc.get('track'),
@@ -71,23 +78,14 @@ class CandidatesStore {
                     Q2: formData.general.Q2 as string,
                     Q3: formData.general.Q3 as string,
                   },
-                  score: {
-                    Q1: formData.general.Q1_score || 0,
-                    Q2: formData.general.Q2_score || 0,
-                    Q3: formData.general.Q2_score || 0,
-                  },
-                  grader: doc.get('grading.general.grader') as string,
+                  score: [],
                 },
                 track: {
                   answers: {
                     Q1: formData.track.Q1 as string,
                     Q2: formData.track.Q2 as string,
                   },
-                  score: {
-                    Q1: doc.get('grading.track.Q1.score') as number,
-                    Q2: doc.get('grading.track.Q2.score') as number,
-                  },
-                  grader: doc.get('grading.track.grader') as string,
+                  score: [],
                 },
               },
               status: doc.get('grading.status') as string,
@@ -107,7 +105,7 @@ class CandidatesStore {
     },
   );
 
-  getCandidatesByPercentile = computedFn(
+/*  getCandidatesByPercentile = computedFn(
     (percentile: number): Array<Candidate> => {
       const sortedCandidates = this.candidates.sort(
         (a, b) =>
@@ -132,6 +130,8 @@ class CandidatesStore {
       return this.candidates.slice(startingIndex);
     },
   );
+
+*/
 
   // There is no grader option. Please add
   // Do not use this method for now.

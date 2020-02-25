@@ -38,11 +38,7 @@ const displayMode = (mode: SelectorMode): string => {
 
 const searchForMatch = (search: string, candidates: Array<Candidate>): Array<Candidate> => {
   if (search.length) {
-    return (
-      candidates.filter(c => c.id.includes(search)) ||
-      candidates.filter(c => c.gradingData.general.grader.includes(search)) ||
-      candidates.filter(c => c.gradingData.track.grader.includes(search))
-    );
+    return candidates.filter(c => c.id.includes(search));
   }
   return candidates;
 };
@@ -124,16 +120,10 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
               <Tr bg="pink.100" key={candidate.id}>
                 <Td>{candidate.id}</Td>
                 <Td>{candidate.track}</Td>
-                <Td>
-                  {getAverageScore([
-                    candidate.gradingData.general.score.Q1,
-                    candidate.gradingData.general.score.Q2,
-                    candidate.gradingData.general.score.Q3,
-                  ])}
-                </Td>
-                <Td>{getAverageScore([candidate.gradingData.track.score.Q1, candidate.gradingData.track.score.Q2])}</Td>
-                <Td>{candidate.gradingData.general.grader}</Td>
-                <Td>{candidate.gradingData.track.grader}</Td>
+                <Td>0</Td>
+                <Td>0</Td>
+                <Td>โมส</Td>
+                <Td>ไก่</Td>
                 <Td>{candidate.status}</Td>
                 <Td>
                   <Button
