@@ -5,29 +5,34 @@ import { observer } from 'mobx-react';
 import { useStore } from './StoreProvider';
 import firebase from '../constants/firebase';
 import Comment from '../@types/Comment';
+import Candidate from '../@types/Candidate';
 
 const db = firebase().firestore();
 
-const CandidateCommentView: React.FC = () => {
-  const store = useStore();
+const CandidateCommentView: React.FC<{ candidate: Candidate }> = ({ candidate }) => {
   const [comments, setComments] = useState<Array<Comment>>([]);
-  const router = useRouter();
-  const { id } = router.query;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const addComment = (rawComment: any): void => {
+    setComments(prev => [
+      {
+        ...prev,
+        id: rawComment.id,
+        name: rawComment.get('name'),
+        body: rawComment.get('body'),
+      },
+    ]);
+  };
+
   useEffect(() => {
     db.collection('registration')
-      .doc(id.toString())
+      .doc(candidate.id)
       .collection('comments')
-      .get()
-      .then(doc => {
-        doc.forEach(rawComment => {
-          setComments(prev => [
-            ...prev,
-            {
-              id: rawComment.id,
-              name: rawComment.get('name'),
-              body: rawComment.get('body'),
-            },
-          ]);
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            addComment(change.doc);
+          }
         });
       });
   }, []);

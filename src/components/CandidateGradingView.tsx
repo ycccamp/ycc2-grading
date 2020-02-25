@@ -21,7 +21,7 @@ const getTitleMessage = (props: CandidateGradingViewProps, candidate: Candidate)
   return `ให้คะแนนคำถามสาขา ${candidate.track} ผู้สมัคร : ${candidate.id}`;
 };
 
-const Question: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
+const RawQuestion: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
   if (!candidate) {
     return <Text color="red.500">กำลังโหลดข้อมูล</Text>;
   }
@@ -55,6 +55,8 @@ const Question: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidat
     </Box>
   );
 };
+
+const Question = observer(RawQuestion);
 
 const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode }) => {
   if (mode === GradingMode.General) {
@@ -93,25 +95,20 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
   const router = useRouter();
   const { id } = router.query;
   const [candidate, setCandidate] = useState<Candidate>();
+  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const fetchedCandidate = store.candidateStore.candidates.find(c => c.id === id.toString());
     setCandidate(fetchedCandidate);
-  }, []);
-  if (typeof candidate === 'undefined') {
-    return (
-      <Layout>
-        <Heading size="2xl">กำลังโหลด</Heading>
-      </Layout>
-    );
-  }
+    setLoaded(true);
+  }, [candidate]);
   return (
     <Layout>
-      <Heading size="2xl">{getTitleMessage(props, candidate)}</Heading>
+      <Heading size="2xl">{loaded ? getTitleMessage(props, candidate) : 'Loading'}</Heading>
       <Box w="100%">
         <Question mode={props.mode} candidate={candidate} />
       </Box>
       <Flex alignItems="baseline" flexWrap="wrap" width="100%">
-        <CandidateCommentView />
+        {loaded ? <CandidateCommentView candidate={candidate} /> : <Text>กำลังโหลดข้อมูล</Text>}
         <Box p={3} w="40%">
           <Heading size="lg">ให้คะแนน</Heading>
           <Grading mode={props.mode} />

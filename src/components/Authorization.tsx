@@ -13,8 +13,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ children, accessibleRoles
       .auth()
       .onAuthStateChanged(user => {
         if (user) {
-          const { roles } = store.authStore;
-          if (typeof roles.find(role => accessibleRoles.includes(role)) === 'undefined') {
+          if (typeof store.authStore.roles.find(role => accessibleRoles.includes(role)) === 'undefined') {
             router.push('/dashboard');
           }
         }
