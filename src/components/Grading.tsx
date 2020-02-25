@@ -5,6 +5,7 @@ import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradi
 import firebase from '../constants/firebase';
 import { Score } from '../@types/Candidate';
 import { useStore } from './StoreProvider';
+import { sendScore } from '../core/utils';
 
 const db = firebase().firestore();
 
@@ -84,6 +85,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
       unsubTrack();
     };
   }, []);
+
   return (
     <Box>
       <FormControl w="100%">
@@ -100,7 +102,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               type="number"
               width="10%"
             />
-            <Button variantColor="green" width="20%">
+            <Button onClick={(): void => sendScore(candidate.id, gradingScore, mode)} variantColor="green" width="20%">
               บันทึกคะแนน
             </Button>
           </Flex>
@@ -116,7 +118,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               type="number"
               width="10%"
             />
-            <Button variantColor="green" width="20%">
+            <Button onClick={(): void => sendScore(candidate.id, gradingScore, mode)} variantColor="green" width="20%">
               บันทึกคะแนน
             </Button>
           </Flex>
@@ -132,7 +134,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               type="number"
               width="10%"
             />
-            <Button variantColor="green" width="20%">
+            <Button onClick={(): void => sendScore(candidate.id, gradingScore, mode)} variantColor="green" width="20%">
               บันทึกคะแนน
             </Button>
           </Flex>

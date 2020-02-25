@@ -1,4 +1,9 @@
-/* eslint-disable import/prefer-default-export */
+import { Score } from '../@types/Candidate';
+import { GradingMode } from '../@types/CandidateGradingViewProps';
+import firebase from '../constants/firebase';
+
+const db = firebase().firestore();
+
 export const getAverageScore = (scores: Array<number>): number => {
   return scores.reduce((prev, curr) => prev + curr) / scores.length;
 };
@@ -9,4 +14,14 @@ export function paginate<T>(array: Array<T>, perPage: number, page: number): Arr
 
 export function getMaxPage<T>(array: Array<T>, perPage: number): number {
   return Math.round(array.length / perPage);
+}
+
+export function sendScore(id: string, score: Score, mode: GradingMode): void {
+  db.collection('registration')
+    .doc(id)
+    .collection('grading')
+    .doc(mode)
+    .collection('score')
+    .doc(score.grader)
+    .update(score);
 }
