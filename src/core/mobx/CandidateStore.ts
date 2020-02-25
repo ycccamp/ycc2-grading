@@ -135,7 +135,7 @@ class CandidatesStore {
 
   // There is no grader option. Please add
   // Do not use this method for now.
-  @action gradeCandidate(candidateId: string, section: string, questionNumber: string, score: number): void {
+  /* @action gradeCandidate(candidateId: string, section: string, questionNumber: string, score: number): void {
     const grader = this.rootStore.retrieveGrader();
     this.candidates.forEach(candidate => {
       if (candidate.id === candidateId) {
@@ -167,7 +167,7 @@ class CandidatesStore {
         }
       }
     });
-  }
+  } */
 }
 
 export default CandidatesStore;
