@@ -1,5 +1,10 @@
 import { FormControl, Stack, FormLabel, Input, Button, Box, Flex, BoxProps } from '@chakra-ui/core';
-import CandidateGradingViewProps from '../@types/CandidateGradingViewProps';
+import { useEffect, useState, ReactNode } from 'react';
+import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
+import firebase from '../constants/firebase';
+import { Score } from '../@types/Candidate';
+
+const db = firebase().firestore();
 
 const Th: React.FC<BoxProps> = ({ children, as }) => (
   <Box py={2} fontFamily="heading" as={as || 'th'} bg="pink.700" color="white">
@@ -20,6 +25,55 @@ const Td: React.FC<BoxProps> = ({ children }) => (
 );
 
 const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
+  const [generalScores, setGeneralScores] = useState<Array<Score>>([]);
+  const [trackScores, setTrackScores] = useState<Array<Score>>([]);
+  useEffect(() => {
+    const unsubGeneral = db
+      .collection('registration')
+      .doc(candidate.id)
+      .collection('grading')
+      .doc('general')
+      .collection('score')
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            setGeneralScores(prev => [
+              ...prev,
+              {
+                grader: change.doc.id,
+                Q1: change.doc.get('Q1'),
+                Q2: change.doc.get('Q2'),
+                Q3: change.doc.get('Q3'),
+              },
+            ]);
+          }
+        });
+      });
+    const unsubTrack = db
+      .collection('registration')
+      .doc(candidate.id)
+      .collection('grading')
+      .doc('track')
+      .collection('score')
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            setTrackScores(prev => [
+              ...prev,
+              {
+                grader: change.doc.id,
+                Q1: change.doc.get('Q1'),
+                Q2: change.doc.get('Q2'),
+              },
+            ]);
+          }
+        });
+      });
+    return (): void => {
+      unsubGeneral();
+      unsubTrack();
+    };
+  }, []);
   return (
     <Box>
       <FormControl w="100%">
@@ -54,12 +108,24 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
           <Th>Q2</Th>
           <Th>Q3</Th>
         </Tr>
-        <Tr>
-          <Td>โมส</Td>
-          <Td>8</Td>
-          <Td>7</Td>
-          <Td>7</Td>
-        </Tr>
+        {(): ReactNode => {
+          if (mode === GradingMode.Track) {
+            return trackScores.map(score => (
+              <Tr key={score.grader}>
+                <Td>{score.Q1}</Td>
+                <Td>{score.Q2}</Td>
+                <Td>{score.Q3}</Td>
+              </Tr>
+            ));
+          }
+          return generalScores.map(score => (
+            <Tr key={score.grader}>
+              <Td>{score.Q1}</Td>
+              <Td>{score.Q2}</Td>
+              <Td>-</Td>
+            </Tr>
+          ));
+        }}
       </Box>
     </Box>
   );

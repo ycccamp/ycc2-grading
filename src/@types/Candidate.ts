@@ -11,25 +11,23 @@ interface Candidate {
         Q2: string;
         Q3: string;
       };
-      score: Array<{
-        grader: string;
-        Q1: number;
-        Q2: number;
-        Q3: number;
-      }>;
+      score: Array<Score>;
     };
     track: {
       answers: {
         Q1: string;
         Q2: string;
       };
-      score: Array<{
-        grader: string;
-        Q1: number;
-        Q2: number;
-      }>;
+      score: Array<Score>;
     };
   };
+}
+
+export interface Score {
+  grader: string;
+  Q1: number;
+  Q2: number;
+  Q3?: number;
 }
 
 export default Candidate;
