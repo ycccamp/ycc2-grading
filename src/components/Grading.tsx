@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-indent */
 import { FormControl, Stack, FormLabel, Input, Button, Box, Flex, BoxProps } from '@chakra-ui/core';
 import { useEffect, useState, ReactNode } from 'react';
 import { observer } from 'mobx-react';
@@ -95,7 +96,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
             <Input
               value={gradingScore.Q1}
               onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore(prev => ({ ...prev, Q1: (e.target.value as unknown) as number }));
+                setGradingScore(prev => ({ ...prev, Q1: (e.currentTarget.value as unknown) as number }));
               }}
               max="10"
               mx={2}
@@ -111,7 +112,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
             <Input
               value={gradingScore.Q2}
               onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore(prev => ({ ...prev, Q2: (e.target.value as unknown) as number }));
+                setGradingScore(prev => ({ ...prev, Q2: (e.currentTarget.value as unknown) as number }));
               }}
               max="10"
               mx={2}
@@ -126,9 +127,9 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
             <FormLabel width="39%">ให้คะแนนคำถามที 3</FormLabel>
             <Input
               value={gradingScore.Q3}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-                setGradingScore(prev => ({ ...prev, Q3: (e.target.value as unknown) as number }))
-              }
+              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                setGradingScore(prev => ({ ...prev, Q3: (e.currentTarget.value as unknown) as number }));
+              }}
               max="10"
               mx={2}
               type="number"
@@ -147,24 +148,23 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
           <Th>Q2</Th>
           <Th>Q3</Th>
         </Tr>
-        {(): ReactNode => {
-          if (mode === GradingMode.Track) {
-            return trackScores.map(score => (
+        {mode === GradingMode.Track
+          ? trackScores.map(score => (
               <Tr key={score.grader}>
+                <Td>{score.grader}</Td>
+                <Td>{score.Q1}</Td>
+                <Td>{score.Q2}</Td>
+                <Td> - </Td>
+              </Tr>
+            ))
+          : generalScores.map(score => (
+              <Tr key={score.grader}>
+                <Td>{score.grader}</Td>
                 <Td>{score.Q1}</Td>
                 <Td>{score.Q2}</Td>
                 <Td>{score.Q3}</Td>
               </Tr>
-            ));
-          }
-          return generalScores.map(score => (
-            <Tr key={score.grader}>
-              <Td>{score.Q1}</Td>
-              <Td>{score.Q2}</Td>
-              <Td>-</Td>
-            </Tr>
-          ));
-        }}
+            ))}
       </Box>
     </Box>
   );

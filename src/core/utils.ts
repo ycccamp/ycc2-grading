@@ -23,5 +23,13 @@ export function sendScore(id: string, score: Score, mode: GradingMode): void {
     .doc(mode)
     .collection('score')
     .doc(score.grader)
-    .update(score);
+    .update({
+      grader: score.grader,
+      Q1: score.Q1 || 0,
+      Q2: score.Q2 || 0,
+      Q3: score.Q3 || 0,
+    })
+    .then(() => {
+      console.log(score);
+    });
 }
