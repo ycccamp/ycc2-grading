@@ -6,7 +6,6 @@ import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradi
 import firebase from '../constants/firebase';
 import { Score } from '../@types/Candidate';
 import { useStore } from './StoreProvider';
-import { sendScore } from '../core/utils';
 
 const db = firebase().firestore();
 
@@ -37,6 +36,22 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
     Q2: 0,
     Q3: 0,
   });
+  const sendScore = (): void => {
+    db.collection('registration')
+      .doc(candidate.id)
+      .collection('grading')
+      .doc(mode)
+      .collection('score')
+      .doc(gradingScore.grader)
+      .update({
+        Q1: gradingScore.Q1 || 0,
+        Q2: gradingScore.Q2 || 0,
+        Q3: gradingScore.Q3 || 0,
+      })
+      .then(() => {
+        console.log(gradingScore);
+      });
+  };
   const { authStore } = useStore();
   useEffect(() => {
     setGradingScore(prev => ({ ...prev, grader: authStore.name }));
@@ -103,7 +118,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               type="number"
               width="10%"
             />
-            <Button onClick={(): void => sendScore(candidate.id, gradingScore, mode)} variantColor="green" width="20%">
+            <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
               บันทึกคะแนน
             </Button>
           </Flex>
@@ -119,7 +134,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               type="number"
               width="10%"
             />
-            <Button onClick={(): void => sendScore(candidate.id, gradingScore, mode)} variantColor="green" width="20%">
+            <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
               บันทึกคะแนน
             </Button>
           </Flex>
@@ -135,7 +150,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               type="number"
               width="10%"
             />
-            <Button onClick={(): void => sendScore(candidate.id, gradingScore, mode)} variantColor="green" width="20%">
+            <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
               บันทึกคะแนน
             </Button>
           </Flex>
