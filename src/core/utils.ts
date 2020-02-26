@@ -34,16 +34,14 @@ export function sendScore(id: string, score: Score, mode: GradingMode): void {
     });
 }
 
-export function normalizeScore(targetScore: number, scores: Array<number>): number {
+export function normalizeScore(scores: Array<number>): number {
   const maxScore = scores.reduce((prev, curr) => {
     return prev >= curr ? prev : curr;
   });
   const minScore = scores.reduce((prev, curr) => {
     return prev <= curr ? prev : curr;
   });
+  const averageScore = getAverageScore(scores);
 
-  if (maxScore === minScore) {
-    return targetScore;
-  }
-  return ((targetScore - minScore) / (maxScore - minScore)) * 10;
+  return ((averageScore - minScore) / (maxScore - minScore)) * 10;
 }
