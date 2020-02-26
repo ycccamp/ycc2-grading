@@ -34,7 +34,7 @@ const displayMode = (mode: SelectorMode): string => {
   if (mode === SelectorMode.Selecting) {
     return 'คัดเลือกผู้สมัคร';
   }
-  return 'ตรวจสอบประวัติ';
+  return 'ไม่มีอะไร';
 };
 
 const searchForMatch = (search: string, candidates: Array<Candidate>): Array<Candidate> => {
@@ -51,7 +51,7 @@ const filterCandidateByTrack = (track: string, candidates: Array<Candidate>): Ar
   return candidates.filter(c => c.track === track);
 };
 
-const handleClickByMode = (mode: SelectorMode, id: string, openPopup? : Function): void => {
+const handleClickByMode = (mode: SelectorMode, id: string, openPopup?: Function): void => {
   if (mode === SelectorMode.Track) {
     Router.push('/grading/track/[id]', `/grading/track/${id}`);
   } else if (mode === SelectorMode.General) {
@@ -139,6 +139,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
                     onClick={(): void => {
                       handleClickByMode(mode, candidate.id, openPopup);
                     }}
+                    isDisabled={mode === SelectorMode.Display}
                     variantColor="blue"
                   >
                     {displayMode(mode)}
