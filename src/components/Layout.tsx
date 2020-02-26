@@ -13,7 +13,7 @@ const Layout: React.FC = ({ children }) => {
           <DashbaordLink text="คัดเลือกผู้สมัคร" link="/select" />
           <DashbaordLink text="ให้คะแนนคำถามกลาง" link="/grading/general" />
           <DashbaordLink text="ให้คะแนนคำถามสาขา" link="/grading/track" />
-          <DashbaordLink text="ผู้ผ่านการคัดเลือก" link="/selected" />
+          <DashbaordLink text="ผลการคัดเลือก" link="/result" />
         </Stack>
         <Stack mt={10} alignItems="center" width="100%">
           <Heading size="md">{store.authStore.name}</Heading>
