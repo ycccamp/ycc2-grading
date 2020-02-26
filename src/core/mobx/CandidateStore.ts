@@ -106,7 +106,7 @@ class CandidatesStore {
                   })),
                 },
               },
-              status: (doc.get('grading.status') as string) || 'ยังตรวจไม่เสร็จ',
+              status: (doc.get('status') as string) || 'ยังตรวจไม่เสร็จ',
             });
           });
         }
@@ -133,6 +133,10 @@ class CandidatesStore {
       .doc(id)
       .update({
         status: selectionType,
+      })
+      .then(() => {
+        const candidate = this.candidates.find(c => c.id === id);
+        candidate.status = selectionType;
       });
   }
 }
