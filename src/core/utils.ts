@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import { Score } from '../@types/Candidate';
 import { GradingMode } from '../@types/CandidateGradingViewProps';
 import firebase from '../constants/firebase';
@@ -5,7 +6,7 @@ import firebase from '../constants/firebase';
 const db = firebase().firestore();
 
 export const getAverageScore = (scores: Array<number>): number => {
-  return scores.reduce((prev, curr) => prev + curr) / scores.length;
+  return R.sum(scores) / scores.length;
 };
 
 export function paginate<T>(array: Array<T>, perPage: number, page: number): Array<T> {
