@@ -7,6 +7,7 @@ import CandidateSelectorProps, { SelectorMode } from '../@types/CandidateSelecto
 import { getAverageScore, paginate, getMaxPage } from '../core/utils';
 import { useStore } from './StoreProvider';
 import Candidate from '../@types/Candidate';
+import SelectionDialog from './SelectionDialog';
 
 const Th: React.FC<BoxProps> = ({ children, bg }) => (
   <Box textAlign="center" fontFamily="heading" color="white" as="th" bg={bg} py={2}>
@@ -50,11 +51,13 @@ const filterCandidateByTrack = (track: string, candidates: Array<Candidate>): Ar
   return candidates.filter(c => c.track === track);
 };
 
-const handleClickByMode = (mode: SelectorMode, id: string): void => {
+const handleClickByMode = (mode: SelectorMode, id: string, openPopup? : Function): void => {
   if (mode === SelectorMode.Track) {
     Router.push('/grading/track/[id]', `/grading/track/${id}`);
   } else if (mode === SelectorMode.General) {
     Router.push('/grading/general/[id]', `/grading/general/${id}`);
+  } else if (mode === SelectorMode.Selecting) {
+    openPopup(id);
   }
 };
 
@@ -63,6 +66,12 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
   const [search, setSearch] = useState<string>('');
   const [track, setTrack] = useState<string>('all');
   const [page, setPage] = useState<number>(1);
+  const [isPopupOpened, setPopupOpened] = useState<boolean>(false);
+  const [popupId, setPopupId] = useState<string>('');
+  const openPopup = (id: string): void => {
+    setPopupId(id);
+    setPopupOpened(true);
+  };
   useEffect(() => {
     if (page >= getMaxPage(searchForMatch(search, filterCandidateByTrack(track, candidates)), 10)) {
       setPage(1);
@@ -128,7 +137,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
                 <Td>
                   <Button
                     onClick={(): void => {
-                      handleClickByMode(mode, candidate.id);
+                      handleClickByMode(mode, candidate.id, openPopup);
                     }}
                     variantColor="blue"
                   >
@@ -148,6 +157,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
       >
         โหลดข้อมูลใหม่
       </Button>
+      <SelectionDialog isOpen={isPopupOpened} id={popupId} onClose={(): void => setPopupOpened(false)} />
     </>
   );
 };
