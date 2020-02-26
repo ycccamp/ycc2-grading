@@ -6,6 +6,7 @@ import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradi
 import firebase from '../constants/firebase';
 import { Score } from '../@types/Candidate';
 import { useStore } from './StoreProvider';
+import { normalizeScore } from '../core/utils';
 
 const db = firebase().firestore();
 
@@ -180,6 +181,21 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
                 <Td>{score.Q3}</Td>
               </Tr>
             ))}
+        {mode === GradingMode.Track ? (
+          <Tr>
+            <Td>รวม</Td>
+            <Td>{trackScores.length > 0 ? normalizeScore(trackScores.map(x => x.Q1)) : 'กำลังโหลด'}</Td>
+            <Td>{trackScores.length > 0 ? normalizeScore(trackScores.map(x => x.Q2)) : 'กำลังโหลด'}</Td>
+            <Td> - </Td>
+          </Tr>
+        ) : (
+          <Tr>
+            <Td>รวม</Td>
+            <Td>{generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q1)) : 'กำลังโหลด'}</Td>
+            <Td>{generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q2)) : 'กำลังโหลด'}</Td>
+            <Td>{generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q3)) : 'กำลังโหลด'}</Td>
+          </Tr>
+        )}
       </Box>
     </Box>
   );

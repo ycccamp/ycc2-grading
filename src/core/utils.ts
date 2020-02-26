@@ -35,13 +35,10 @@ export function sendScore(id: string, score: Score, mode: GradingMode): void {
 }
 
 export function normalizeScore(scores: Array<number>): number {
-  const maxScore = scores.reduce((prev, curr) => {
-    return prev >= curr ? prev : curr;
-  });
   const minScore = scores.reduce((prev, curr) => {
     return prev <= curr ? prev : curr;
   });
   const averageScore = getAverageScore(scores);
 
-  return ((averageScore - minScore) / (maxScore - minScore)) * 10;
+  return ((averageScore - minScore) / (10 - minScore)) * 10;
 }
