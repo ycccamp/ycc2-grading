@@ -70,7 +70,11 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
   }, [candidate]);
   return (
     <>
-      {typeof candidate !== 'undefined' ? (
+      {typeof candidate === 'undefined' ? (
+        <Layout>
+          <Text color="blue.700">กำลังโหลดข้อมูล</Text>
+        </Layout>
+      ) : (
         <Layout>
           <Heading size="2xl">{getTitleMessage(props, candidate)}</Heading>
           <Box w="100%">
@@ -83,10 +87,6 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
               <Grading candidate={candidate} mode={props.mode} />
             </Box>
           </Flex>
-        </Layout>
-      ) : (
-        <Layout>
-          <Text>กำลังโหลดข้อมูล</Text>
         </Layout>
       )}
     </>
