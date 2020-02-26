@@ -18,7 +18,7 @@ const SelectionDialog: React.FC<SelectionDialogProps> = ({ isOpen, id, onClose }
   const select = (selectionType: SelectionType): void => {
     candidateStore.selectCandidate(id, selectionType);
     onClose();
-  }
+  };
   return (
     <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={(): void => onClose()}>
       <AlertDialogOverlay />
