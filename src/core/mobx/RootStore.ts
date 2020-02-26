@@ -1,4 +1,5 @@
 // import { firestore } from 'firebase';
+import { observable } from 'mobx';
 import CandidatesStore from './CandidateStore';
 import AuthStore from './AuthStore';
 import 'firebase/firestore';
@@ -10,6 +11,10 @@ class RootStore {
   authStore: AuthStore;
 
   firebaseDB: firebase.firestore.Firestore;
+
+  @observable isPopupOpened = false;
+
+  @observable popupId = '';
 
   constructor() {
     this.candidateStore = new CandidatesStore(this);
