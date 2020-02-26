@@ -28,8 +28,8 @@ const SelectionDialog: React.FC<SelectionDialogProps> = ({ isOpen, id, onClose, 
           <Button variantColor="red" onClick={onDelist}>
             คัดออก
           </Button>
-          <Button variantColor="red" variant="outline" onClick={onClose}>
-            ออก
+          <Button ref={cancelRef} variantColor="red" variant="outline" onClick={onClose}>
+            ยกเลิก
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
