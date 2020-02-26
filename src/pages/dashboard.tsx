@@ -29,13 +29,10 @@ const Dashboard: NextPage = () => {
             สถานะการให้คะแนน
           </Heading>
           <Text fontWeight="bold" fontSize="lg" fontFamily="heading">
-            ตรวจเสร็จเรียบร้อย 5 คน
+            {`ตรวจเสร็จเรียบร้อย ${candidateStore.candidates.filter(c => c.status !== 'ยังตรวจไม่เสร็จ').length}`}
           </Text>
           <Text fontWeight="bold" fontSize="lg" fontFamily="heading">
-            กำลังตรวจ 10 คน
-          </Text>
-          <Text fontWeight="bold" fontSize="lg" fontFamily="heading">
-            ยังไม่เริ่ม 8 คน
+            {`รอตรวจ ${candidateStore.candidates.filter(c => c.status === 'ยังตรวจไม่เสร็จ').length} คน`}
           </Text>
         </Box>
         <Box p={5} borderWidth="2px" borderColor="gray.200" borderStyle="solid" width={2 / 4}>
@@ -43,13 +40,13 @@ const Dashboard: NextPage = () => {
             สถานะการคัดเลือก
           </Heading>
           <Text fontWeight="bold" fontSize="lg" fontFamily="heading">
-            ผ่านการคัดเลือก 1 คน
+            {`ตัวจริง ${candidateStore.candidates.filter(c => c.status === 'selected').length} คน`}
           </Text>
           <Text fontWeight="bold" fontSize="lg" fontFamily="heading">
-            ไม่ผ่านการคัดเลือก 3 คน
+            {`ตัวสำรอง ${candidateStore.candidates.filter(c => c.status === 'alternate').length} คน`}
           </Text>
           <Text fontWeight="bold" fontSize="lg" fontFamily="heading">
-            กำลังพิจารณา 19 คน
+            {`ถูกคัดออก ${candidateStore.candidates.filter(c => c.status === 'delisted').length} คน`}
           </Text>
         </Box>
       </Flex>
