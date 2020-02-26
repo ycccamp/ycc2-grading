@@ -64,7 +64,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
   const [track, setTrack] = useState<string>('all');
   const [page, setPage] = useState<number>(1);
   useEffect(() => {
-    if (page >= getMaxPage(searchForMatch(search, candidates), 10)) {
+    if (page >= getMaxPage(searchForMatch(search, filterCandidateByTrack(track, candidates)), 10)) {
       setPage(1);
     }
   }, [page]);
