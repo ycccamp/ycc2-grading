@@ -4,9 +4,10 @@ import Candidate from './Candidate';
 type ClickAction = (MouseEvent) => void;
 
 export enum SelectorMode {
-  Track,
-  General,
-  Selecting,
+  Track = 'track',
+  General = 'general',
+  Selecting = 'selecting',
+  Display = 'display',
 }
 
 interface CandidateSelectorProps {
