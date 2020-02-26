@@ -30,4 +30,6 @@ export interface Score {
   Q3?: number;
 }
 
+export type SelectionType = 'selected' | 'alternate' | 'delisted';
+
 export default Candidate;
