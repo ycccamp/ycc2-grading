@@ -106,7 +106,7 @@ class CandidatesStore {
                   })),
                 },
               },
-              status: doc.get('grading.status') as string,
+              status: (doc.get('grading.status') as string) || 'ยังตรวจไม่เสร็จ',
             });
           });
         }
