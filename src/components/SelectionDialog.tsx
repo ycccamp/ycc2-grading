@@ -6,6 +6,7 @@ import {
   AlertDialogHeader,
   AlertDialogFooter,
   Button,
+  Stack,
 } from '@chakra-ui/core';
 import SelectionDialogProps from '../@types/SelectionDialogProps';
 import { useStore } from './StoreProvider';
@@ -26,18 +27,20 @@ const SelectionDialog: React.FC<SelectionDialogProps> = ({ isOpen, id, onClose }
           {`คัดเลือกผู้สมัครรหัส ${id}`}
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <Button variantColor="green" onClick={(): void => select('selected')}>
-            ตัวจริง
-          </Button>
-          <Button variantColor="yellow" onClick={(): void => select('alternate')}>
-            ตัวสำรอง
-          </Button>
-          <Button variantColor="red" onClick={(): void => select('delisted')}>
-            คัดออก
-          </Button>
-          <Button ref={cancelRef} variantColor="red" variant="outline" onClick={(): void => onClose()}>
-            ยกเลิก
-          </Button>
+          <Stack isInline spacing={3}>
+            <Button variantColor="green" onClick={(): void => select('selected')}>
+              ตัวจริง
+            </Button>
+            <Button variantColor="yellow" onClick={(): void => select('alternate')}>
+              ตัวสำรอง
+            </Button>
+            <Button variantColor="red" onClick={(): void => select('delisted')}>
+              คัดออก
+            </Button>
+            <Button ref={cancelRef} variantColor="red" variant="outline" onClick={(): void => onClose()}>
+              ยกเลิก
+            </Button>
+          </Stack>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
