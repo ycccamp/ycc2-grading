@@ -7,7 +7,11 @@ import { useStore } from '../components/StoreProvider';
 
 const Select: NextPage = () => {
   const store = useStore();
-  return <CandidateView title="ให้คะแนน" mode={SelectorMode.Selecting} candidates={store.candidateStore.candidates} />;
+  return (
+    <>
+      <CandidateView title="ให้คะแนน" mode={SelectorMode.Selecting} candidates={store.candidateStore.candidates} />
+    </>
+  );
 };
 
 export default observer(Select);
