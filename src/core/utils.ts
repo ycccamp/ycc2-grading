@@ -35,9 +35,7 @@ export function sendScore(id: string, score: Score, mode: GradingMode): void {
 }
 
 export function normalizeScore(scores: Array<number>): number {
-  const minScore = scores.reduce((prev, curr) => {
-    return prev <= curr ? prev : curr;
-  });
+  const minScore = Math.min(...scores);
   const averageScore = getAverageScore(scores);
 
   return ((averageScore - minScore) / (10 - minScore)) * 10;
