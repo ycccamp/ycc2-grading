@@ -2,7 +2,7 @@
 import { observable, action } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import { persist } from 'mobx-persist';
-import Candidate from '../../@types/Candidate';
+import Candidate, { SelectionType } from '../../@types/Candidate';
 import RootStore from './RootStore';
 import TRACKS from '../../constants/tracks';
 import firebase from '../../constants/firebase';
@@ -124,68 +124,17 @@ class CandidatesStore {
   );
 
   /*  getCandidatesByPercentile = computedFn(
-    (percentile: number): Array<Candidate> => {
-      const sortedCandidates = this.candidates.sort(
-        (a, b) =>
-          getAverageScore([
-            getAverageScore([
-              a.gradingData.general.score.Q1,
-              a.gradingData.general.score.Q2,
-              a.gradingData.general.score.Q3,
-            ]),
-            getAverageScore([a.gradingData.track.score.Q1, a.gradingData.track.score.Q2]),
-          ]) -
-          getAverageScore([
-            getAverageScore([
-              b.gradingData.general.score.Q1,
-              b.gradingData.general.score.Q2,
-              b.gradingData.general.score.Q3,
-            ]),
-            getAverageScore([b.gradingData.track.score.Q1, b.gradingData.track.score.Q2]),
-          ]),
-      );
-      const startingIndex = Math.floor((percentile * (sortedCandidates.length + 1)) / 100);
-      return this.candidates.slice(startingIndex);
-    },
-  );
+  ); 
+  */
 
-*/
-
-  // There is no grader option. Please add
-  // Do not use this method for now.
-  /* @action gradeCandidate(candidateId: string, section: string, questionNumber: string, score: number): void {
-    const grader = this.rootStore.retrieveGrader();
-    this.candidates.forEach(candidate => {
-      if (candidate.id === candidateId) {
-        const candidateFirebase = db.collection('registration').doc(candidateId);
-        if (section === 'track') {
-          candidate.gradingData.track[questionNumber].score = score;
-          candidateFirebase.update({
-            grading: {
-              track: {
-                score: {
-                  [questionNumber]: score,
-                },
-                grader,
-              },
-            },
-          });
-        } else if (section === 'general') {
-          candidate.gradingData.general[questionNumber].score = score;
-          candidateFirebase.update({
-            grading: {
-              general: {
-                score: {
-                  [questionNumber]: score,
-                },
-                grader,
-              },
-            },
-          });
-        }
-      }
-    });
-  } */
+  // eslint-disable-next-line class-methods-use-this
+  selectCandidate(id: string, selectionType: SelectionType): void {
+    db.collection('registration')
+      .doc(id)
+      .update({
+        status: selectionType,
+      });
+  }
 }
 
 export default CandidatesStore;
