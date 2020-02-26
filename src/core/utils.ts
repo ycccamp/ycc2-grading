@@ -33,3 +33,17 @@ export function sendScore(id: string, score: Score, mode: GradingMode): void {
       console.log(score);
     });
 }
+
+export function normalizeScore(targetScore: number, scores: Array<number>): number {
+  const maxScore = scores.reduce((prev, curr) => {
+    return prev >= curr ? prev : curr;
+  });
+  const minScore = scores.reduce((prev, curr) => {
+    return prev <= curr ? prev : curr;
+  });
+
+  if (maxScore === minScore) {
+    return targetScore;
+  }
+  return ((targetScore - minScore) / (maxScore - minScore)) * 10;
+}
