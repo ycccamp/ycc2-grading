@@ -135,18 +135,17 @@ class CandidatesStore {
     );
   });
 
-  getNormalizedScore = computedFn((candidate: Candidate, grader: string, mode: GradingMode, question: question) => {
+  getNormalizedScore = computedFn((score: number, grader: string, mode: GradingMode, question: question) => {
     const allScore = this.getAllScoreByGraderAndQuestion(grader, mode, question);
-    const candidateScore = candidate.gradingData[mode].score.find(x => x.grader === grader)[question];
     if (allScore.length === 1) {
-      return candidateScore;
+      return score;
     }
     const max = Math.max(...allScore);
     const min = Math.min(...allScore);
     if (min === max) {
-      return candidateScore;
+      return score;
     }
-    return ((candidateScore - min) / (max - min)) * 10;
+    return ((score - min) / (max - min)) * 10;
   });
 
   /*
