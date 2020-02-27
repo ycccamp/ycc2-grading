@@ -1,4 +1,4 @@
-import { Box, Text, Heading, Stack, Textarea, Button } from '@chakra-ui/core';
+import { Box, Text, Heading, Stack, Textarea, Button, useToast } from '@chakra-ui/core';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react';
@@ -10,6 +10,7 @@ import Candidate from '../@types/Candidate';
 const db = firebase().firestore();
 
 const CandidateCommentView: React.FC<{ candidate: Candidate }> = ({ candidate }) => {
+  const toast = useToast();
   const store = useStore();
   const [comments, setComments] = useState<Array<Comment>>([]);
   const [commentBody, setCommentBody] = useState<string>('');
@@ -29,6 +30,19 @@ const CandidateCommentView: React.FC<{ candidate: Candidate }> = ({ candidate })
         })
         .then(() => {
           setCommentBody('');
+          toast({
+            title: 'แสดงความคิดเห็นเรียบร้อย',
+            status: 'success',
+            position: 'bottom-right',
+          });
+        })
+        .catch(err => {
+          toast({
+            title: 'เกิดข้อผิดพลาด',
+            description: err,
+            status: 'error',
+            position: 'bottom-right',
+          });
         });
     }
   };
