@@ -12,7 +12,7 @@ const Select: NextPage = () => {
       <CandidateView
         title="ให้คะแนน"
         mode={SelectorMode.Selecting}
-        candidates={store.candidateStore.getCandidateByPercentile(95)}
+        candidates={store.candidateStore.getCandidatesByPercentile(95)}
       />
     </>
   );
