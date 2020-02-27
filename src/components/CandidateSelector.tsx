@@ -8,6 +8,7 @@ import { getAverageScore, paginate, getMaxPage } from '../core/utils';
 import { useStore } from './StoreProvider';
 import Candidate, { statusDisplay } from '../@types/Candidate';
 import SelectionDialog from './SelectionDialog';
+import { GradingMode } from '../@types/CandidateGradingViewProps';
 
 const Th: React.FC<BoxProps> = ({ children, bg }) => (
   <Box textAlign="center" fontFamily="heading" color="white" as="th" bg={bg} py={2}>
@@ -142,8 +143,16 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
               <Tr bg="pink.100" key={candidate.id}>
                 <Td>{candidate.id}</Td>
                 <Td>{candidate.track}</Td>
-                <Td>0</Td>
-                <Td>0</Td>
+                <Td>
+                  {candidate.gradingData.general.score.length
+                    ? store.candidateStore.getCandidateAverageScoreByMode(candidate, GradingMode.General).toFixed(2)
+                    : '-'}
+                </Td>
+                <Td>
+                  {candidate.gradingData.track.score.length
+                    ? store.candidateStore.getCandidateAverageScoreByMode(candidate, GradingMode.Track).toFixed(2)
+                    : '-'}
+                </Td>
                 <Td>{candidate.gradingData.general.score.map(s => s.grader).join(', ') || 'ยังไม่มี'}</Td>
                 <Td>{candidate.gradingData.track.score.map(s => s.grader).join(', ') || 'ยังไม่มี'}</Td>
                 <Td color={displayColor(candidate.status)}>{statusDisplay[candidate.status]}</Td>
