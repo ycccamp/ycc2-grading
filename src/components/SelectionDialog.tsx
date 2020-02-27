@@ -7,17 +7,34 @@ import {
   AlertDialogFooter,
   Button,
   Stack,
+  useToast,
 } from '@chakra-ui/core';
 import SelectionDialogProps from '../@types/SelectionDialogProps';
 import { useStore } from './StoreProvider';
 import { SelectionType } from '../@types/Candidate';
 
 const SelectionDialog: React.FC<SelectionDialogProps> = ({ isOpen, id, onClose }) => {
+  const toast = useToast();
   const { candidateStore } = useStore();
   const cancelRef = useRef();
+  const toastTitle = (selectionType: SelectionType) => {
+    if (selectionType === 'selected') {
+      return `เลือกผู้สมัคร ${id} เป็นตัวจริง`;
+    }
+    if (selectionType === 'alternate') {
+      return `เลือกผู้สมัคร ${id} เป็นตัวสำรอง`;
+    }
+    return `คัดผู้สมัคร ${id} ออก`;
+  };
   const select = (selectionType: SelectionType): void => {
     candidateStore.selectCandidate(id, selectionType);
     onClose();
+    toast({
+      title: toastTitle(selectionType),
+      status: 'success',
+      isClosable: true,
+      position: 'bottom-right',
+    });
   };
   return (
     <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={(): void => onClose()}>
