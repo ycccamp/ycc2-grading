@@ -33,3 +33,10 @@ export interface Score {
 export type SelectionType = 'selected' | 'alternate' | 'delisted';
 
 export default Candidate;
+
+export const statusDisplay = {
+  ยังตรวจไม่เสร็จ: 'ยังตรวจไม่เสร็จ',
+  selected: 'ตัวจริง',
+  alternate: 'ตัวสำรอง',
+  delisted: 'คัดออก',
+};

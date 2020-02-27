@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import CandidateSelectorProps, { SelectorMode } from '../@types/CandidateSelectorProps';
 import { getAverageScore, paginate, getMaxPage } from '../core/utils';
 import { useStore } from './StoreProvider';
-import Candidate from '../@types/Candidate';
+import Candidate, { statusDisplay } from '../@types/Candidate';
 import SelectionDialog from './SelectionDialog';
 
 const Th: React.FC<BoxProps> = ({ children, bg }) => (
@@ -21,8 +21,8 @@ const Tr: React.FC<BoxProps> = ({ children, bg }) => (
   </Box>
 );
 
-const Td: React.FC<BoxProps> = ({ children, bg }) => (
-  <Box textAlign="center" fontFamily="body" color="black" as="td" bg={bg} py={2}>
+const Td: React.FC<BoxProps> = ({ children, bg, color }) => (
+  <Box textAlign="center" fontFamily="body" as="td" bg={bg} color={color || 'black'} py={2}>
     {children}
   </Box>
 );
@@ -59,6 +59,19 @@ const handleClickByMode = (mode: SelectorMode, id: string, openPopup?: Function)
   } else if (mode === SelectorMode.Selecting) {
     openPopup(id);
   }
+};
+
+const displayColor = (status: string): string => {
+  if (status === 'selected') {
+    return 'green.600';
+  }
+  if (status === 'alternate') {
+    return 'orange.600';
+  }
+  if (status === 'delisted') {
+    return 'red.600';
+  }
+  return 'black';
 };
 
 const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates }) => {
@@ -133,7 +146,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
                 <Td>0</Td>
                 <Td>โมส</Td>
                 <Td>ไก่</Td>
-                <Td>{candidate.status}</Td>
+                <Td color={displayColor(candidate.status)}>{statusDisplay[candidate.status]}</Td>
                 <Td>
                   <Button
                     onClick={(): void => {
