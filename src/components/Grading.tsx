@@ -182,19 +182,47 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               </Tr>
             ))}
         {mode === GradingMode.Track ? (
-          <Tr>
-            <Td>เฉลี่ย</Td>
-            <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}</Td>
-            <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}</Td>
-            <Td> - </Td>
-          </Tr>
+          <>
+            <Tr>
+              <Td>เฉลี่ย</Td>
+              <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}</Td>
+              <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}</Td>
+              <Td> - </Td>
+            </Tr>
+            <Tr>
+              <Td>Normalized</Td>
+              <Td>{trackScores.length > 0 ? normalizeScore(trackScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}</Td>
+              <Td>{trackScores.length > 0 ? normalizeScore(trackScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}</Td>
+              <Td> - </Td>
+            </Tr>
+          </>
         ) : (
-          <Tr>
-            <Td>เฉลี่ย</Td>
-            <Td>{generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}</Td>
-            <Td>{generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}</Td>
-            <Td>{generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q3)).toFixed(2) : 'กำลังโหลด'}</Td>
-          </Tr>
+          <>
+            <Tr>
+              <Td>เฉลี่ย</Td>
+              <Td>
+                {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}
+              </Td>
+              <Td>
+                {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}
+              </Td>
+              <Td>
+                {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q3)).toFixed(2) : 'กำลังโหลด'}
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Normalized</Td>
+              <Td>
+                {generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}
+              </Td>
+              <Td>
+                {generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}
+              </Td>
+              <Td>
+                {generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q3)).toFixed(2) : 'กำลังโหลด'}
+              </Td>
+            </Tr>
+          </>
         )}
       </Box>
     </Box>
