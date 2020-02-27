@@ -37,7 +37,18 @@ export function sendScore(id: string, score: Score, mode: GradingMode): void {
 
 export function normalizeScore(scores: Array<number>): number {
   const minScore = Math.min(...scores);
+  const maxScore = Math.max(...scores);
   const averageScore = getAverageScore(scores);
+  if (maxScore === minScore) {
+    return averageScore;
+  }
+  return ((averageScore - minScore) / (maxScore - minScore)) * 10;
+}
 
-  return ((averageScore - minScore) / (10 - minScore)) * 10;
+export function getAllScores(scores: Array<Score>): Array<number> {
+  return [].concat(
+    scores.map(x => x.Q1),
+    scores.map(x => x.Q2),
+    scores.map(x => x.Q3),
+  );
 }
