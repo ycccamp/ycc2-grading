@@ -144,8 +144,8 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
                 <Td>{candidate.track}</Td>
                 <Td>0</Td>
                 <Td>0</Td>
-                <Td>โมส</Td>
-                <Td>ไก่</Td>
+                <Td>{candidate.gradingData.general.score.map(s => s.grader).join(', ') || 'ยังไม่มี'}</Td>
+                <Td>{candidate.gradingData.track.score.map(s => s.grader).join(', ') || 'ยังไม่มี'}</Td>
                 <Td color={displayColor(candidate.status)}>{statusDisplay[candidate.status]}</Td>
                 <Td>
                   <Button
