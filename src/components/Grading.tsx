@@ -29,6 +29,7 @@ const Td: React.FC<BoxProps> = ({ children }) => (
 );
 
 const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
+  const { candidateStore } = useStore();
   const [generalScores, setGeneralScores] = useState<Array<Score>>([]);
   const [trackScores, setTrackScores] = useState<Array<Score>>([]);
   const [gradingScore, setGradingScore] = useState<Score>({
@@ -51,6 +52,29 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
       })
       .then(() => {
         console.log(gradingScore);
+        candidateStore.candidates.forEach(x => {
+          if (x.id === candidate.id) {
+            if (mode === GradingMode.General) {
+              x.gradingData.general.score.forEach(score => {
+                if (score.grader === gradingScore.grader) {
+                  // eslint-disable-next-line no-param-reassign
+                  score = gradingScore;
+                }
+              });
+            }
+            if (mode === GradingMode.Track) {
+              x.gradingData.track.score.forEach(score => {
+                if (score.grader === gradingScore.grader) {
+                  // eslint-disable-next-line no-param-reassign
+                  score = gradingScore;
+                }
+              });
+            }
+          }
+        });
+      })
+      .catch(err => {
+        console.log(`Error ${err}`);
       });
   };
   const { authStore } = useStore();
