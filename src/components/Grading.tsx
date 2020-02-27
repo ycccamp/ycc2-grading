@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-indent */
-import { FormControl, Stack, FormLabel, Input, Button, Box, Flex, BoxProps } from '@chakra-ui/core';
+import { FormControl, Stack, FormLabel, Input, Button, Box, Flex, BoxProps, useToast } from '@chakra-ui/core';
 import { useEffect, useState, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
@@ -29,6 +29,7 @@ const Td: React.FC<BoxProps> = ({ children }) => (
 );
 
 const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
+  const toast = useToast();
   const { candidateStore } = useStore();
   const [generalScores, setGeneralScores] = useState<Array<Score>>([]);
   const [trackScores, setTrackScores] = useState<Array<Score>>([]);
@@ -72,9 +73,20 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
             }
           }
         });
+        toast({
+          title: 'ให้คะแนนสำเร็จ',
+          status: 'success',
+          position: 'bottom-right',
+        });
       })
       .catch(err => {
         console.log(`Error ${err}`);
+        toast({
+          title: 'เกิดข้อผิดพลาด',
+          description: `${err}`,
+          status: 'error',
+          position: 'bottom-right',
+        });
       });
   };
   const { authStore } = useStore();
@@ -128,128 +140,133 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
   }, []);
 
   return (
-    <Box>
-      <FormControl w="100%">
-        <Stack width="100%" spacing={4}>
-          <Flex width="100%">
-            <FormLabel width="39%">ให้คะแนนคำถามที 1</FormLabel>
-            <Input
-              value={gradingScore.Q1}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore(prev => ({ ...prev, Q1: (e.currentTarget.value as unknown) as number }));
-              }}
-              max="10"
-              mx={2}
-              type="number"
-              width="10%"
-            />
-            <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
-              บันทึกคะแนน
-            </Button>
-          </Flex>
-          <Flex width="100%">
-            <FormLabel width="39%">ให้คะแนนคำถามที 2</FormLabel>
-            <Input
-              value={gradingScore.Q2}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore(prev => ({ ...prev, Q2: (e.currentTarget.value as unknown) as number }));
-              }}
-              max="10"
-              mx={2}
-              type="number"
-              width="10%"
-            />
-            <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
-              บันทึกคะแนน
-            </Button>
-          </Flex>
-          <Flex width="100%">
-            <FormLabel width="39%">ให้คะแนนคำถามที 3</FormLabel>
-            <Input
-              value={gradingScore.Q3}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore(prev => ({ ...prev, Q3: (e.currentTarget.value as unknown) as number }));
-              }}
-              max="10"
-              mx={2}
-              type="number"
-              width="10%"
-            />
-            <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
-              บันทึกคะแนน
-            </Button>
-          </Flex>
-        </Stack>
-      </FormControl>
-      <Box mt={4} w="100%" as="table">
-        <Tr>
-          <Th>คนให้คะแนน</Th>
-          <Th>Q1</Th>
-          <Th>Q2</Th>
-          <Th>Q3</Th>
-        </Tr>
-        {mode === GradingMode.Track
-          ? trackScores.map(score => (
-              <Tr key={score.grader}>
-                <Td>{score.grader}</Td>
-                <Td>{score.Q1}</Td>
-                <Td>{score.Q2}</Td>
+    <>
+      <Box>
+        <FormControl w="100%">
+          <Stack width="100%" spacing={4}>
+            <Flex width="100%">
+              <FormLabel width="39%">ให้คะแนนคำถามที 1</FormLabel>
+              <Input
+                value={gradingScore.Q1}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  setGradingScore(prev => ({ ...prev, Q1: (e.currentTarget.value as unknown) as number }));
+                }}
+                max="10"
+                mx={2}
+                type="number"
+                width="10%"
+              />
+              <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
+                บันทึกคะแนน
+              </Button>
+            </Flex>
+            <Flex width="100%">
+              <FormLabel width="39%">ให้คะแนนคำถามที 2</FormLabel>
+              <Input
+                value={gradingScore.Q2}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  setGradingScore(prev => ({ ...prev, Q2: (e.currentTarget.value as unknown) as number }));
+                }}
+                max="10"
+                mx={2}
+                type="number"
+                width="10%"
+              />
+              <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
+                บันทึกคะแนน
+              </Button>
+            </Flex>
+            <Flex width="100%">
+              <FormLabel width="39%">ให้คะแนนคำถามที 3</FormLabel>
+              <Input
+                value={gradingScore.Q3}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  setGradingScore(prev => ({ ...prev, Q3: (e.currentTarget.value as unknown) as number }));
+                }}
+                max="10"
+                mx={2}
+                type="number"
+                width="10%"
+              />
+              <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
+                บันทึกคะแนน
+              </Button>
+            </Flex>
+          </Stack>
+        </FormControl>
+        <Box mt={4} w="100%" as="table">
+          <Tr>
+            <Th>คนให้คะแนน</Th>
+            <Th>Q1</Th>
+            <Th>Q2</Th>
+            <Th>Q3</Th>
+          </Tr>
+          {mode === GradingMode.Track
+            ? trackScores.map(score => (
+                <Tr key={score.grader}>
+                  <Td>{score.grader}</Td>
+                  <Td>{score.Q1}</Td>
+                  <Td>{score.Q2}</Td>
+                  <Td> - </Td>
+                </Tr>
+              ))
+            : generalScores.map(score => (
+                <Tr key={score.grader}>
+                  <Td>{score.grader}</Td>
+                  <Td>{score.Q1}</Td>
+                  <Td>{score.Q2}</Td>
+                  <Td>{score.Q3}</Td>
+                </Tr>
+              ))}
+          {mode === GradingMode.Track ? (
+            <>
+              <Tr>
+                <Td>เฉลี่ย</Td>
+                <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}</Td>
+                <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}</Td>
                 <Td> - </Td>
               </Tr>
-            ))
-          : generalScores.map(score => (
-              <Tr key={score.grader}>
-                <Td>{score.grader}</Td>
-                <Td>{score.Q1}</Td>
-                <Td>{score.Q2}</Td>
-                <Td>{score.Q3}</Td>
+              <Tr>
+                <Td>Normalized</Td>
+                <Td>{trackScores.length > 0 ? normalizeScore(trackScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}</Td>
+                <Td>{trackScores.length > 0 ? normalizeScore(trackScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}</Td>
+                <Td> - </Td>
               </Tr>
-            ))}
-        {mode === GradingMode.Track ? (
-          <>
-            <Tr>
-              <Td>เฉลี่ย</Td>
-              <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}</Td>
-              <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}</Td>
-              <Td> - </Td>
-            </Tr>
-            <Tr>
-              <Td>Normalized</Td>
-              <Td>{trackScores.length > 0 ? normalizeScore(trackScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}</Td>
-              <Td>{trackScores.length > 0 ? normalizeScore(trackScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}</Td>
-              <Td> - </Td>
-            </Tr>
-          </>
-        ) : (
-          <>
-            <Tr>
-              <Td>เฉลี่ย</Td>
-              <Td>
-                {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}
-              </Td>
-              <Td>
-                {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}
-              </Td>
-              <Td>
-                {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q3)).toFixed(2) : 'กำลังโหลด'}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Normalized</Td>
-              <Td>
-                {generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}
-              </Td>
-              <Td>
-                {generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}
-              </Td>
-              <Td>
-                {generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q3)).toFixed(2) : 'กำลังโหลด'}
-              </Td>
-            </Tr>
-          </>
-        )}
+            </>
+          ) : (
+            <>
+              <Tr>
+                <Td>เฉลี่ย</Td>
+                <Td>
+                  {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}
+                </Td>
+                <Td>
+                  {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}
+                </Td>
+                <Td>
+                  {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q3)).toFixed(2) : 'กำลังโหลด'}
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>Normalized</Td>
+                <Td>
+                  {generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}
+                </Td>
+                <Td>
+                  {generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}
+                </Td>
+                <Td>
+                  {generalScores.length > 0 ? normalizeScore(generalScores.map(x => x.Q3)).toFixed(2) : 'กำลังโหลด'}
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>รวม</Td>
+              </Tr>
+            </>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
