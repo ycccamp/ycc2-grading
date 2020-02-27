@@ -148,6 +148,24 @@ class CandidatesStore {
     return ((score - min) / (max - min)) * 10;
   });
 
+  getCandidateAverageScoreByQuestion = computedFn((candidate: Candidate, mode: GradingMode, question: question) => {
+    return getAverageScore(
+      candidate.gradingData[mode].score.map(x => this.getNormalizedScore(x[question], x.grader, mode, question)),
+    );
+  });
+
+  getCandidateAverageScoreByMode = computedFn((candidate: Candidate, mode: GradingMode) => {
+    if (mode === GradingMode.General) {
+      return getAverageScore(
+        ['Q1', 'Q2', 'Q3'].map(q => this.getCandidateAverageScoreByQuestion(candidate, mode, q as question)),
+      );
+    }
+    if (mode === GradingMode.Track) {
+      return getAverageScore(
+        ['Q1', 'Q2'].map(q => this.getCandidateAverageScoreByQuestion(candidate, mode, q as question)),
+      );
+    }
+  });
   /*
   getNormalizedScore = computedFn(
     (id: string)
