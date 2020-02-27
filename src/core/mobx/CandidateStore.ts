@@ -160,20 +160,25 @@ class CandidatesStore {
         ['Q1', 'Q2', 'Q3'].map(q => this.getCandidateAverageScoreByQuestion(candidate, mode, q as question)),
       );
     }
-    if (mode === GradingMode.Track) {
-      return getAverageScore(
-        ['Q1', 'Q2'].map(q => this.getCandidateAverageScoreByQuestion(candidate, mode, q as question)),
-      );
-    }
+
+    return getAverageScore(
+      ['Q1', 'Q2'].map(q => this.getCandidateAverageScoreByQuestion(candidate, mode, q as question)),
+    );
   });
-  /*
-  getNormalizedScore = computedFn(
-    (id: string)
-  ) 
-  */
-  /*  getCandidatesByPercentile = computedFn(
-  ); 
-  */
+
+  getCandidatesByPercentile = computedFn((percentile: number) => {
+    const averageAll = (candidate: Candidate): number => {
+      getAverageScore([
+        this.getCandidateAverageScoreByMode(candidate, GradingMode.Track),
+        this.getCandidateAverageScoreByMode(candidate, GradingMode.General),
+      ]);
+    };
+    const scoredCandidates = this.candidates.filter(
+      c => c.gradingData.general.score.length !== 0 && c.gradingData.track.score.length !== 0,
+    );
+    const start = Math.floor((percentile * (scoredCandidates.length + 1)) / 100);
+    return scoredCandidates.sort((a, b) => averageAll(a) - averageAll(b)).slice(start);
+  });
 
   // eslint-disable-next-line class-methods-use-this
   selectCandidate(id: string, selectionType: SelectionType): void {
