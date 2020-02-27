@@ -2,13 +2,17 @@
 import { observable, action } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import { persist } from 'mobx-persist';
+import * as R from 'ramda';
 import Candidate, { SelectionType } from '../../@types/Candidate';
 import RootStore from './RootStore';
 import TRACKS from '../../constants/tracks';
 import firebase from '../../constants/firebase';
 import { getAverageScore } from '../utils';
+import { GradingMode } from '../../@types/CandidateGradingViewProps';
 
 const db = firebase().firestore();
+
+type question = 'Q1' | 'Q2' | 'Q3';
 
 class CandidatesStore {
   rootStore: RootStore;
@@ -123,6 +127,27 @@ class CandidatesStore {
     },
   );
 
+  getAllScoreByGraderAndQuestion = computedFn((grader: string, mode: GradingMode, question: question) => {
+    return R.flatten(
+      this.candidates.map(candidate =>
+        candidate.gradingData[mode].score.filter(x => x.grader === grader).map(x => x[question]),
+      ),
+    );
+  });
+
+  getNormalizedScore = computedFn((candidate: Candidate, grader: string, mode: GradingMode, question: question) => {
+    const allScore = this.getAllScoreByGraderAndQuestion(grader, mode, question);
+    const max = Math.max(...allScore);
+    const min = Math.min(...allScore);
+    const candidateScore = candidate.gradingData[mode].score.find(x => x.grader === grader)[question];
+    return ((candidateScore - min) / (max - min)) * 10;
+  });
+
+  /*
+  getNormalizedScore = computedFn(
+    (id: string)
+  ) 
+  */
   /*  getCandidatesByPercentile = computedFn(
   ); 
   */
