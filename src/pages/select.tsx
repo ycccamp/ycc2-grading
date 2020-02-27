@@ -9,7 +9,11 @@ const Select: NextPage = () => {
   const store = useStore();
   return (
     <>
-      <CandidateView title="ให้คะแนน" mode={SelectorMode.Selecting} candidates={store.candidateStore.candidates} />
+      <CandidateView
+        title="ให้คะแนน"
+        mode={SelectorMode.Selecting}
+        candidates={store.candidateStore.getCandidateByPercentile(95)}
+      />
     </>
   );
 };

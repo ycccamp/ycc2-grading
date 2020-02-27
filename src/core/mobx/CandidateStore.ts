@@ -168,7 +168,7 @@ class CandidatesStore {
 
   getCandidatesByPercentile = computedFn((percentile: number) => {
     const averageAll = (candidate: Candidate): number => {
-      getAverageScore([
+      return getAverageScore([
         this.getCandidateAverageScoreByMode(candidate, GradingMode.Track),
         this.getCandidateAverageScoreByMode(candidate, GradingMode.General),
       ]);
