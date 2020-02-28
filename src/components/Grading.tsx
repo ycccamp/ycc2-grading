@@ -46,11 +46,16 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
       .doc(mode)
       .collection('score')
       .doc(gradingScore.grader)
-      .update({
-        Q1: gradingScore.Q1 || 0,
-        Q2: gradingScore.Q2 || 0,
-        Q3: gradingScore.Q3 || 0,
-      })
+      .set(
+        {
+          Q1: gradingScore.Q1 || 0,
+          Q2: gradingScore.Q2 || 0,
+          Q3: gradingScore.Q3 || 0,
+        },
+        {
+          merge: true,
+        },
+      )
       .then(() => {
         console.log(gradingScore);
         candidateStore.candidates.forEach(x => {
