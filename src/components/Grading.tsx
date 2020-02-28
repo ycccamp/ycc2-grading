@@ -148,7 +148,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
             <Input
               value={gradingScore.Q1}
               onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore(prev => ({ ...prev, Q1: (e.currentTarget.value as unknown) as number }));
+                setGradingScore({ ...gradingScore, Q1: (e.target.value as unknown) as number });
               }}
               max="10"
               mx={2}
@@ -164,7 +164,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
             <Input
               value={gradingScore.Q2}
               onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore(prev => ({ ...prev, Q2: (e.currentTarget.value as unknown) as number }));
+                setGradingScore({ ...gradingScore, Q2: (e.target.value as unknown) as number });
               }}
               max="10"
               mx={2}
@@ -180,7 +180,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
             <Input
               value={gradingScore.Q3}
               onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore(prev => ({ ...prev, Q3: (e.currentTarget.value as unknown) as number }));
+                setGradingScore({ ...gradingScore, Q3: (e.target.value as unknown) as number });
               }}
               max="10"
               mx={2}
@@ -237,8 +237,20 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
           <>
             <Tr>
               <Td>เฉลี่ย</Td>
-              <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}</Td>
-              <Td>{trackScores.length > 0 ? getAverageScore(trackScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}</Td>
+              <Td>
+                {trackScores.length > 0
+                  ? getAverageScore(
+                      trackScores.map(x => candidateStore.getNormalizedScore(x.Q1, x.grader, GradingMode.Track, 'Q1')),
+                    ).toFixed(2)
+                  : 'กำลังโหลด'}
+              </Td>
+              <Td>
+                {trackScores.length > 0
+                  ? getAverageScore(
+                      trackScores.map(x => candidateStore.getNormalizedScore(x.Q2, x.grader, GradingMode.Track, 'Q2')),
+                    ).toFixed(2)
+                  : 'กำลังโหลด'}
+              </Td>
               <Td> - </Td>
             </Tr>
           </>
@@ -247,13 +259,31 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
             <Tr>
               <Td>เฉลี่ย</Td>
               <Td>
-                {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q1)).toFixed(2) : 'กำลังโหลด'}
+                {generalScores.length > 0
+                  ? getAverageScore(
+                      generalScores.map(x =>
+                        candidateStore.getNormalizedScore(x.Q1, x.grader, GradingMode.General, 'Q1'),
+                      ),
+                    ).toFixed(2)
+                  : 'กำลังโหลด'}
               </Td>
               <Td>
-                {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q2)).toFixed(2) : 'กำลังโหลด'}
+                {generalScores.length > 0
+                  ? getAverageScore(
+                      generalScores.map(x =>
+                        candidateStore.getNormalizedScore(x.Q2, x.grader, GradingMode.General, 'Q2'),
+                      ),
+                    ).toFixed(2)
+                  : 'กำลังโหลด'}
               </Td>
               <Td>
-                {generalScores.length > 0 ? getAverageScore(generalScores.map(x => x.Q3)).toFixed(2) : 'กำลังโหลด'}
+                {generalScores.length > 0
+                  ? getAverageScore(
+                      generalScores.map(x =>
+                        candidateStore.getNormalizedScore(x.Q3, x.grader, GradingMode.General, 'Q1'),
+                      ),
+                    ).toFixed(2)
+                  : 'กำลังโหลด'}
               </Td>
             </Tr>
           </>
