@@ -71,7 +71,7 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
       auth.onAuthStateChanged(async user => {
         if (user) {
           try {
-            fetchedCandidate = await getCandidate(props.id);
+            fetchedCandidate = await getCandidate(props.candidateId);
             setCandidate(fetchedCandidate);
           } catch (err) {
             console.log(err);

@@ -10,7 +10,7 @@ interface CandidateGradingViewProps {
   candidate?: Candidate;
   mode?: GradingMode;
   track?: TRACKS;
-  id?: string;
+  candidateId?: string;
 }
 
 export default CandidateGradingViewProps;

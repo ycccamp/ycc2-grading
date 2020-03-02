@@ -9,7 +9,7 @@ import { useStore } from '../../../../components/StoreProvider';
 const PersonGeneralGrading: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  return <CandidateGradingView id={id as string} mode={GradingMode.General} />;
+  return <CandidateGradingView candidateId={id as string} mode={GradingMode.General} />;
 };
 
 export default PersonGeneralGrading;
