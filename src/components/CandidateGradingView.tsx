@@ -11,6 +11,10 @@ import Candidate from '../@types/Candidate';
 import CandidateCommentView from './CandidateCommentView';
 import DesignerAnswer from './DesignerAnswer';
 import Grading from './Grading';
+import { getCandidate } from '../core/candidate_utils';
+import firebase from '../constants/firebase';
+
+const auth = firebase().auth();
 
 const getTitleMessage = (props: CandidateGradingViewProps, candidate: Candidate): string => {
   if (!candidate) {
@@ -60,14 +64,23 @@ const RawQuestion: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candi
 const Question = observer(RawQuestion);
 
 const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
-  const store = useStore();
-  const router = useRouter();
-  const { id } = router.query;
   const [candidate, setCandidate] = useState<Candidate>();
   useEffect(() => {
-    const fetchedCandidate = store.candidateStore.candidates.find(c => c.id === id.toString());
-    setCandidate(fetchedCandidate);
-  }, [candidate]);
+    const fetchCandidate = async (): Promise<void> => {
+      let fetchedCandidate: Candidate;
+      auth.onAuthStateChanged(async user => {
+        if (user) {
+          try {
+            fetchedCandidate = await getCandidate(props.id);
+            setCandidate(fetchedCandidate);
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      });
+    };
+    fetchCandidate();
+  }, []);
   return (
     <>
       {typeof candidate === 'undefined' ? (
