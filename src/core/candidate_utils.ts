@@ -14,6 +14,7 @@ export async function getCandidate(id: string): Promise<Candidate> {
       if (!doc.exists) {
         throw Error('Candidate not found');
       }
+
       const generalSnapshot = await db
         .collection('registration')
         .doc(id)
