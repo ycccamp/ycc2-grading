@@ -65,19 +65,25 @@ const Question = observer(RawQuestion);
 
 const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
   const [candidate, setCandidate] = useState<Candidate>();
+  const { candidateStore } = useStore();
   useEffect(() => {
     const fetchCandidate = async (): Promise<void> => {
       let fetchedCandidate: Candidate;
-      auth.onAuthStateChanged(async user => {
-        if (user) {
-          try {
-            fetchedCandidate = await getCandidate(props.candidateId);
-            setCandidate(fetchedCandidate);
-          } catch (err) {
-            console.log(err);
+      const storedCandidate = candidateStore.candidates.find(c => c.id === props.candidateId);
+      if (storedCandidate) {
+        fetchedCandidate = storedCandidate;
+      } else {
+        auth.onAuthStateChanged(async user => {
+          if (user) {
+            try {
+              fetchedCandidate = await getCandidate(props.candidateId);
+              setCandidate(fetchedCandidate);
+            } catch (err) {
+              console.log(err);
+            }
           }
-        }
-      });
+        });
+      }
     };
     fetchCandidate();
   }, []);
