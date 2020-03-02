@@ -22,11 +22,17 @@ class AuthStore {
 
   // You may work on this method
   @action authenticate(): void {
-    auth.signInWithPopup(provider).then(result => {
-      if (result.credential) {
-        this.setUser(result.user);
+    auth.onAuthStateChanged(user => {
+      if (user) {
         Router.push('/dashboard');
-        this.rootStore.fecthData();
+      } else {
+        auth.signInWithPopup(provider).then(result => {
+          if (result.credential) {
+            this.setUser(result.user);
+            Router.push('/dashboard');
+            this.rootStore.fecthData();
+          }
+        });
       }
     });
   }
