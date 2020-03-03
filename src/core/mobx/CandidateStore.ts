@@ -38,7 +38,7 @@ class CandidatesStore {
     db.collection('registration')
       .orderBy('timestamp', 'asc')
       .where('isLocked', '==', true)
-      .limit(10)
+      .limit(20)
       .get()
       .then(snapshot => {
         if (!snapshot.empty) {
@@ -55,6 +55,26 @@ class CandidatesStore {
 
   @action cleanPreviousCandidates(amount: number): void {
     this.candidates.splice(0, amount);
+  }
+
+  @action async fetchCandidateByTrack(track: TRACKS): Promise<void> {
+    db.collection('registration')
+      .orderBy('timestamp', 'asc')
+      .where('isLocked', '==', true)
+      .where('track', '==', track)
+      .limit(20)
+      .get()
+      .then(snapshot => {
+        if (!snapshot.empty) {
+          snapshot.forEach(async doc => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const candidate = await docToCandidate(doc);
+
+            this.candidates.push(candidate);
+          });
+        }
+        this.isLoaded = true;
+      });
   }
 
   // @action asyncFetchCandidateById;
