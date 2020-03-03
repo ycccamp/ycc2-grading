@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-indent */
 import { FormControl, Stack, FormLabel, Input, Button, Box, Flex, BoxProps, useToast } from '@chakra-ui/core';
-import { useEffect, useState, ReactNode, Fragment } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { observer } from 'mobx-react';
 import CandidateGradingViewProps, { GradingMode } from '../@types/CandidateGradingViewProps';
 import firebase from '../constants/firebase';
 import { Score } from '../@types/Candidate';
 import { useStore } from './StoreProvider';
-import { normalizeScore, getAverageScore } from '../core/utils';
+import { getAverageScore } from '../core/utils';
 
 const db = firebase().firestore();
 
