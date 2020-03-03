@@ -101,6 +101,7 @@ const CandidateGradingView: React.FC<CandidateGradingViewProps> = props => {
               <Grading candidate={candidate} mode={props.mode} />
             </Box>
           </Flex>
+          <Button color="blue.500">ตรวจคนต่อไป</Button>
         </Layout>
       )}
     </>
