@@ -30,7 +30,7 @@ const Td: React.FC<BoxProps> = ({ children }) => (
 
 const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate }) => {
   const toast = useToast();
-  const { candidateStore } = useStore();
+  const { candidateStore, authStore } = useStore();
   const [generalScores, setGeneralScores] = useState<Array<Score>>([]);
   const [trackScores, setTrackScores] = useState<Array<Score>>([]);
   const [gradingScore, setGradingScore] = useState<Score>({
@@ -94,7 +94,6 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
         });
       });
   };
-  const { authStore } = useStore();
   useEffect(() => {
     setGradingScore(prev => ({ ...prev, grader: authStore.name }));
     const unsubGeneral = db
@@ -160,9 +159,6 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               type="number"
               width="10%"
             />
-            <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
-              บันทึกคะแนน
-            </Button>
           </Flex>
           <Flex width="100%">
             <FormLabel width="39%">ให้คะแนนคำถามที 2</FormLabel>
@@ -171,31 +167,32 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                 setGradingScore({ ...gradingScore, Q2: (e.target.value as unknown) as number });
               }}
-              max="10"
+              max="20"
               mx={2}
               type="number"
               width="10%"
             />
-            <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
-              บันทึกคะแนน
-            </Button>
           </Flex>
-          <Flex width="100%">
-            <FormLabel width="39%">ให้คะแนนคำถามที 3</FormLabel>
-            <Input
-              value={gradingScore.Q3}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                setGradingScore({ ...gradingScore, Q3: (e.target.value as unknown) as number });
-              }}
-              max="10"
-              mx={2}
-              type="number"
-              width="10%"
-            />
-            <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
-              บันทึกคะแนน
-            </Button>
-          </Flex>
+          {mode === GradingMode.General ? (
+            <Flex width="100%">
+              <FormLabel width="39%">ให้คะแนนคำถามที 3</FormLabel>
+              <Input
+                value={gradingScore.Q3}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  setGradingScore({ ...gradingScore, Q3: (e.target.value as unknown) as number });
+                }}
+                max="10"
+                mx={2}
+                type="number"
+                width="10%"
+              />
+            </Flex>
+          ) : (
+            ''
+          )}
+          <Button onClick={(): void => sendScore()} variantColor="green" width="20%">
+            บันทึกคะแนน
+          </Button>
         </Stack>
       </FormControl>
       <Box mt={4} w="100%" as="table">
@@ -203,41 +200,45 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
           <Th>คนให้คะแนน</Th>
           <Th>Q1</Th>
           <Th>Q2</Th>
-          <Th>Q3</Th>
+          {mode === GradingMode.General ? <Th>Q3</Th> : <></>}
         </Tr>
         {mode === GradingMode.Track
-          ? trackScores.map(score => (
-              <Fragment key={score.grader}>
-                <Tr>
-                  <Td>{score.grader}</Td>
-                  <Td>{score.Q1}</Td>
-                  <Td>{score.Q2}</Td>
-                  <Td> - </Td>
-                </Tr>
-                <Tr>
-                  <Td>{`${score.grader} (Normalized)`}</Td>
-                  <Td>{candidateStore.getNormalizedScore(score.Q1, score.grader, GradingMode.Track, 'Q1')}</Td>
-                  <Td>{candidateStore.getNormalizedScore(score.Q2, score.grader, GradingMode.Track, 'Q2')}</Td>
-                  <Td> - </Td>
-                </Tr>
-              </Fragment>
-            ))
-          : generalScores.map(score => (
-              <Fragment key={score.grader}>
-                <Tr>
-                  <Td>{score.grader}</Td>
-                  <Td>{score.Q1}</Td>
-                  <Td>{score.Q2}</Td>
-                  <Td>{score.Q3}</Td>
-                </Tr>
-                <Tr>
-                  <Td>{`${score.grader} (Normalized)`}</Td>
-                  <Td>{candidateStore.getNormalizedScore(score.Q1, score.grader, GradingMode.General, 'Q1')}</Td>
-                  <Td>{candidateStore.getNormalizedScore(score.Q2, score.grader, GradingMode.General, 'Q2')}</Td>
-                  <Td>{candidateStore.getNormalizedScore(score.Q3, score.grader, GradingMode.General, 'Q3')}</Td>
-                </Tr>
-              </Fragment>
-            ))}
+          ? trackScores
+              .filter(x => x.grader === authStore.name)
+              .map(score => (
+                <Fragment key={score.grader}>
+                  <Tr>
+                    <Td>{score.grader}</Td>
+                    <Td>{score.Q1}</Td>
+                    <Td>{score.Q2}</Td>
+                    <Td> - </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{`${score.grader} (Normalized)`}</Td>
+                    <Td>{candidateStore.getNormalizedScore(score.Q1, score.grader, GradingMode.Track, 'Q1')}</Td>
+                    <Td>{candidateStore.getNormalizedScore(score.Q2, score.grader, GradingMode.Track, 'Q2')}</Td>
+                    <Td> - </Td>
+                  </Tr>
+                </Fragment>
+              ))
+          : generalScores
+              .filter(x => x.grader === authStore.name)
+              .map(score => (
+                <Fragment key={score.grader}>
+                  <Tr>
+                    <Td>{score.grader}</Td>
+                    <Td>{score.Q1}</Td>
+                    <Td>{score.Q2}</Td>
+                    <Td>{score.Q3}</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{`${score.grader} (Normalized)`}</Td>
+                    <Td>{candidateStore.getNormalizedScore(score.Q1, score.grader, GradingMode.General, 'Q1')}</Td>
+                    <Td>{candidateStore.getNormalizedScore(score.Q2, score.grader, GradingMode.General, 'Q2')}</Td>
+                    <Td>{candidateStore.getNormalizedScore(score.Q3, score.grader, GradingMode.General, 'Q3')}</Td>
+                  </Tr>
+                </Fragment>
+              ))}
         {mode === GradingMode.Track ? (
           <>
             <Tr>
