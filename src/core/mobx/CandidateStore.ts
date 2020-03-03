@@ -53,6 +53,10 @@ class CandidatesStore {
       });
   }
 
+  @action cleanPreviousCandidates(amount: number): void {
+    this.candidates.splice(0, amount);
+  }
+
   // @action asyncFetchCandidateById;
 
   // eslint-disable-next-line func-names
