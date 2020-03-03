@@ -211,13 +211,11 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
                     <Td>{score.grader}</Td>
                     <Td>{score.Q1}</Td>
                     <Td>{score.Q2}</Td>
-                    <Td> - </Td>
                   </Tr>
                   <Tr>
                     <Td>{`${score.grader} (Normalized)`}</Td>
                     <Td>{candidateStore.getNormalizedScore(score.Q1, score.grader, GradingMode.Track, 'Q1')}</Td>
                     <Td>{candidateStore.getNormalizedScore(score.Q2, score.grader, GradingMode.Track, 'Q2')}</Td>
-                    <Td> - </Td>
                   </Tr>
                 </Fragment>
               ))
@@ -257,7 +255,6 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
                     ).toFixed(2)
                   : 'กำลังโหลด'}
               </Td>
-              <Td> - </Td>
             </Tr>
           </>
         ) : (

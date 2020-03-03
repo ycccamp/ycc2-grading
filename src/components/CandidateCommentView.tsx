@@ -58,7 +58,9 @@ const CandidateCommentView: React.FC<{ candidate: Candidate }> = ({ candidate })
       .onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
           if (change.type === 'added') {
-            addComment(change.doc);
+            if (change.doc.get('name') === store.authStore.name) {
+              addComment(change.doc);
+            }
           }
         });
       });
