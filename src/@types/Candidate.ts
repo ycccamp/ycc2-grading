@@ -4,6 +4,7 @@ interface Candidate {
   id: string;
   track: TRACKS;
   status: string;
+  timestamp: number;
   gradingData: {
     general: {
       answers: {

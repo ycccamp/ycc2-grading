@@ -71,6 +71,7 @@ export async function getCandidate(id: string): Promise<Candidate> {
           },
         },
         status: (doc.get('status') as string) || 'ยังตรวจไม่เสร็จ',
+        timestamp: doc.get('timestamp') as number,
       };
     });
   return candidate;

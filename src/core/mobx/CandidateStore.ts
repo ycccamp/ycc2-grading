@@ -113,6 +113,7 @@ class CandidatesStore {
                 },
               },
               status: (doc.get('status') as string) || 'ยังตรวจไม่เสร็จ',
+              timestamp: doc.get('timestamp') as number,
             });
           });
         }
