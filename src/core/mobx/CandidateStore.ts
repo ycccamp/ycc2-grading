@@ -35,7 +35,9 @@ class CandidatesStore {
 
   @action async fetchCandidate(): Promise<void> {
     db.collection('registration')
+      .orderBy('timestamp', 'asc')
       .where('isLocked', '==', true)
+      .limit(10)
       .get()
       .then(snapshot => {
         if (!snapshot.empty) {
