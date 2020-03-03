@@ -115,6 +115,12 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
             </option>
           ))}
         </Select>
+        <Button leftIcon="arrow-left" variantColor="blue">
+          ก่อนหน้า
+        </Button>
+        <Button rightIcon="arrow-right" variantColor="blue">
+          ถัดไป
+        </Button>
         <Select
           w="20%"
           onChange={(e: React.ChangeEvent<HTMLSelectElement>): void => setTrack(e.target.value as string)}
