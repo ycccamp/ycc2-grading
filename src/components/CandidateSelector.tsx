@@ -79,7 +79,6 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
   const store = useStore();
   const [search, setSearch] = useState<string>('');
   const [track, setTrack] = useState<string>('all');
-  const [page, setPage] = useState<number>(1);
   const [isPopupOpened, setPopupOpened] = useState<boolean>(false);
   const [popupId, setPopupId] = useState<string>('');
   const openPopup = (id: string): void => {
@@ -87,10 +86,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
     setPopupOpened(true);
   };
   useEffect(() => {
-    if (page >= getMaxPage(searchForMatch(search, filterCandidateByTrack(track, candidates)), 10)) {
-      setPage(1);
-    }
-  }, [page]);
+  }, []);
   return (
     <>
       <Stack w="100%" py={2} isInline spacing={4}>
@@ -104,17 +100,6 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
             type="text"
           />
         </InputGroup>
-        <Select
-          w="20%"
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>): void => setPage((e.target.value as unknown) as number)}
-        >
-          {[...Array(getMaxPage(searchForMatch(search, candidates), 10))].map((_, i) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <option value={i + 1} key={i + 1}>
-              {i + 1}
-            </option>
-          ))}
-        </Select>
         <Button leftIcon="arrow-left" variantColor="blue">
           ก่อนหน้า
         </Button>
@@ -148,7 +133,7 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
           <Th>สถานะ</Th>
           <Th>{displayMode(mode)}</Th>
         </Tr>
-        {paginate(searchForMatch(search, filterCandidateByTrack(track, candidates)), 10, page)
+        {searchForMatch(search, filterCandidateByTrack(track, candidates))
           .slice(0, 10)
           .map(candidate => {
             return (
