@@ -24,6 +24,10 @@ class CandidatesStore {
 
   @persist @observable isLoaded = false;
 
+  @persist @observable page = 1;
+
+  @persist @observable searchString = '';
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
   }
@@ -31,6 +35,28 @@ class CandidatesStore {
   @action init(): void {
     if (this.candidates.length === 0) {
       this.fetchCandidate();
+    }
+  }
+
+  @action setSearchString(pattern: string): void {
+    this.searchString = pattern;
+  }
+
+  @action nextPage(n?: number): void {
+    if (n) {
+      this.page += n;
+    } else {
+      this.page += 1;
+    }
+  }
+
+  @action previousPage(n?: number): void {
+    if (n) {
+      if (this.page - n >= 1) {
+        this.page -= n;
+      }
+    } else if (this.page - 1 >= 1) {
+      this.page -= 1;
     }
   }
 

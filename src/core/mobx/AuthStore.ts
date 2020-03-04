@@ -16,6 +16,17 @@ class AuthStore {
 
   @persist('list') @observable roles: Array<string> = [];
 
+  @persist('object') @observable maxAndMinScore = {
+    general: {
+      max: 0,
+      min: 0,
+    },
+    track: {
+      max: 0,
+      min: 0,
+    },
+  }
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
   }
@@ -42,6 +53,9 @@ class AuthStore {
       .collection('grading')
       .doc(user.uid)
       .get();
+    if (!snapshot.exists) {
+      Router.push('/403')
+    }
     this.name = snapshot.get('name');
     this.roles = snapshot.get('roles') as Array<string>;
   }
