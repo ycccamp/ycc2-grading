@@ -116,7 +116,7 @@ class CandidatesStore {
   getAllScoreByGraderAndQuestion = computedFn((grader: string, mode: GradingMode, question: question) => {
     return R.flatten(
       this.candidates.map(candidate =>
-        candidate.gradingData[mode].score.filter(x => x.grader === grader).map(x => x[question]),
+        candidate.forms[mode].score.filter(x => x.grader === grader).map(x => x[question]),
       ),
     );
   });
@@ -136,7 +136,7 @@ class CandidatesStore {
 
   getCandidateAverageScoreByQuestion = computedFn((candidate: Candidate, mode: GradingMode, question: question) => {
     return getAverageScore(
-      candidate.gradingData[mode].score.map(x => this.getNormalizedScore(x[question], x.grader, mode, question)),
+      candidate.forms[mode].score.map(x => this.getNormalizedScore(x[question], x.grader, mode, question)),
     );
   });
 
@@ -160,7 +160,7 @@ class CandidatesStore {
       ]);
     };
     const scoredCandidates = this.candidates.filter(
-      c => c.gradingData.general.score.length !== 0 && c.gradingData.track.score.length !== 0,
+      c => c.forms.general.score.length !== 0 && c.forms.track.score.length !== 0,
     );
     const start = Math.floor((percentile * (scoredCandidates.length + 1)) / 100);
     return scoredCandidates.sort((a, b) => averageAll(a) - averageAll(b)).slice(start);
