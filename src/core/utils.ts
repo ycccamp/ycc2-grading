@@ -17,16 +17,21 @@ export function getMaxPage<T>(array: Array<T>, perPage: number): number {
   return Math.round(array.length / perPage);
 }
 
-export function sendScore(id: string, score: Score, mode: GradingMode): void {
+/* export function sendScore(id: string, score: Score, mode: GradingMode): void {.
+  db.collection('registration')
+    .doc(id)
+    .update({
+      `${}`
+    })
   db.collection('registration')
     .doc(id)
     .collection('grading')
     .doc(mode)
     .collection('score')
-    .doc(score.grader)
+    .doc(score.name)
     .update({
-      grader: score.grader,
-      Q1: score.Q1 || 0,
+      grader: score.name,
+      Q1: score[0] || 0,
       Q2: score.Q2 || 0,
       Q3: score.Q3 || 0,
     })
@@ -34,7 +39,7 @@ export function sendScore(id: string, score: Score, mode: GradingMode): void {
       console.log(score);
     });
 }
-
+*/
 export function normalizeScore(scores: Array<number>): number {
   const minScore = Math.min(...scores);
   const maxScore = Math.max(...scores);

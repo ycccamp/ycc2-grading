@@ -38,7 +38,7 @@ export async function docToCandidate(
   return {
     id: doc.id,
     track: doc.get('track'),
-    gradingData: {
+    forms: {
       general: {
         answers: {
           Q1: generalSnapshot.get('Q1'),
