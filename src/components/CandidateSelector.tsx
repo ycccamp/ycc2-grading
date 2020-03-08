@@ -143,12 +143,12 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
                 {mode === SelectorMode.Selecting ? (
                   <>
                     <Td>
-                      {candidate.gradingData.general.score.length
+                      {candidate.forms.general.score.length
                         ? store.candidateStore.getCandidateAverageScoreByMode(candidate, GradingMode.General).toFixed(2)
                         : '-'}
                     </Td>
                     <Td>
-                      {candidate.gradingData.track.score.length
+                      {candidate.forms.track.score.length
                         ? store.candidateStore.getCandidateAverageScoreByMode(candidate, GradingMode.Track).toFixed(2)
                         : '-'}
                     </Td>
@@ -156,8 +156,8 @@ const CandidateSelector: React.FC<CandidateSelectorProps> = ({ mode, candidates 
                 ) : (
                   <></>
                 )}
-                <Td>{candidate.gradingData.general.score.map(s => s.grader).join(', ') || 'ยังไม่มี'}</Td>
-                <Td>{candidate.gradingData.track.score.map(s => s.grader).join(', ') || 'ยังไม่มี'}</Td>
+                <Td>{candidate.forms.general.score.map(s => s.grader).join(', ') || 'ยังไม่มี'}</Td>
+                <Td>{candidate.forms.track.score.map(s => s.grader).join(', ') || 'ยังไม่มี'}</Td>
                 <Td color={displayColor(candidate.status)}>{statusDisplay[candidate.status]}</Td>
                 <Td>
                   <Button
