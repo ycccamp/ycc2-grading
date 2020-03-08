@@ -5,30 +5,27 @@ interface Candidate {
   track: TRACKS;
   status: string;
   timestamp: number;
-  gradingData: {
+  forms: {
     general: {
-      answers: {
-        Q1: string;
-        Q2: string;
-        Q3: string;
-      };
-      score: Array<Score>;
+      Q1: string;
+      Q2: string;
+      Q3: string;
     };
     track: {
-      answers: {
-        Q1: string;
-        Q2: string;
-      };
-      score: Array<Score>;
+      Q1: string;
+      Q2: string;
     };
   };
+  generalGrading: Array<Score>;
+  trackGrading: Array<Score>;
 }
 
 export interface Score {
-  grader: string;
-  Q1: number;
-  Q2: number;
-  Q3?: number;
+  name: string;
+  score: Array<{
+    name: string;
+    score: Array<number>;
+  }>;
 }
 
 export type SelectionType = 'selected' | 'alternate' | 'delisted';
