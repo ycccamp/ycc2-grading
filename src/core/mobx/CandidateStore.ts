@@ -71,6 +71,7 @@ class CandidatesStore {
           snapshot.forEach(async doc => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const candidate = await docToCandidate(doc);
+            console.log(doc.data());
 
             this.candidates.push(candidate);
           });
