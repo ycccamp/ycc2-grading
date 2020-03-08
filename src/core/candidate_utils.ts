@@ -20,51 +20,24 @@ export async function docToCandidate(
     .collection('forms')
     .doc('track')
     .get();
-  const generalScoreSnapshot = await db
-    .collection('registration')
-    .doc(doc.id)
-    .collection('grading')
-    .doc('general')
-    .collection('score')
-    .get();
-
-  const trackScoreSnapshot = await db
-    .collection('registration')
-    .doc(doc.id)
-    .collection('grading')
-    .doc('track')
-    .collection('score')
-    .get();
   return {
     id: doc.id,
     track: doc.get('track'),
     forms: {
       general: {
-        answers: {
-          Q1: generalSnapshot.get('Q1'),
-          Q2: generalSnapshot.get('Q2'),
-          Q3: generalSnapshot.get('Q3'),
-        },
-        score: generalScoreSnapshot.docs.map(score => ({
-          grader: score.id,
-          Q1: score.get('Q1'),
-          Q2: score.get('Q2'),
-        })),
+        Q1: generalSnapshot.get('Q1'),
+        Q2: generalSnapshot.get('Q2'),
+        Q3: generalSnapshot.get('Q3'),
       },
       track: {
-        answers: {
-          Q1: trackSnapshot.get('Q1'),
-          Q2: trackSnapshot.get('Q2'),
-        },
-        score: trackScoreSnapshot.docs.map(score => ({
-          grader: score.id,
-          Q1: score.get('Q1'),
-          Q2: score.get('Q2'),
-        })),
+        Q1: trackSnapshot.get('Q1'),
+        Q2: trackSnapshot.get('Q2'),
       },
     },
     status: (doc.get('status') as string) || 'ยังตรวจไม่เสร็จ',
     timestamp: doc.get('timestamp') as number,
+    generalGrading: doc.get('generalGrading'),
+    trackGrading: doc.get('trackGrading')
   };
 }
 
