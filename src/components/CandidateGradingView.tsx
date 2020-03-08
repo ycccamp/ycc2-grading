@@ -34,11 +34,11 @@ const RawQuestion: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candi
     return (
       <Stack spacing={8} py={4}>
         <Heading size="lg">{QUESTIONS.general.Q1}</Heading>
-        <Text>{candidate.gradingData.general.answers.Q1}</Text>
+        <Text>{candidate.forms.general.Q1}</Text>
         <Heading size="lg">{QUESTIONS.general.Q2}</Heading>
-        <Text>{candidate.gradingData.general.answers.Q2}</Text>
+        <Text>{candidate.forms.general.Q2}</Text>
         <Heading size="lg">{QUESTIONS.general.Q3}</Heading>
-        <Text>{candidate.gradingData.general.answers.Q3}</Text>
+        <Text>{candidate.forms.general.Q3}</Text>
       </Stack>
     );
   }
@@ -47,9 +47,9 @@ const RawQuestion: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candi
       <Stack spacing={8} py={4}>
         <Heading size="lg">{QUESTIONS[candidate.track].Q1}</Heading>
         {candidate.track === 'designer' ? <DesignerAnswer candidate={candidate} /> : ''}
-        <Text>{candidate.gradingData.track.answers.Q1}</Text>
+        <Text>{candidate.forms.track.Q1}</Text>
         <Heading size="lg">{QUESTIONS[candidate.track].Q2}</Heading>
-        <Text>{candidate.gradingData.track.answers.Q2}</Text>
+        <Text>{candidate.forms.track.Q2}</Text>
       </Stack>
     );
   }

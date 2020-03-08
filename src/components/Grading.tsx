@@ -61,7 +61,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
         candidateStore.candidates.forEach(x => {
           if (x.id === candidate.id) {
             if (mode === GradingMode.General) {
-              x.gradingData.general.score.forEach(score => {
+              x.forms.general.score.forEach(score => {
                 if (score.grader === gradingScore.grader) {
                   // eslint-disable-next-line no-param-reassign
                   score = gradingScore;
@@ -69,7 +69,7 @@ const Grading: React.FC<Partial<CandidateGradingViewProps>> = ({ mode, candidate
               });
             }
             if (mode === GradingMode.Track) {
-              x.gradingData.track.score.forEach(score => {
+              x.forms.track.score.forEach(score => {
                 if (score.grader === gradingScore.grader) {
                   // eslint-disable-next-line no-param-reassign
                   score = gradingScore;
